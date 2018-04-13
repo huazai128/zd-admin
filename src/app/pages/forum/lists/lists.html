@@ -1,0 +1,169 @@
+<ba-card title="论坛管理" selectType="add" baCardClass="with-scroll">
+  <div class="add">
+    <a routerLink="/forum/editor">新增</a>
+  </div>
+  <div class="article-list">
+    <div class="tools flex">
+      <div class="btn-group flex-center">
+        <nz-select style="width: 150px;" [nzPlaceHolder]="'文章类型'" [(ngModel)]="getParams.category" (ngModelChange)="selectCategory($event)"
+          nzShowSearch>
+          <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div class="btn-group flex-center">
+        <nz-select style="width: 200px;" nzAllowClear [nzPlaceHolder]="'请选择工具标签(最多选择三个)'" [nzMode]="'multiple'" [(ngModel)]="getParams.tags"
+          (ngModelChange)="selectTags($event)" nzShowSearch>
+          <nz-option *ngFor="let option of tagOptions" [nzLabel]="option.name" [nzValue]="option._id" [nzDisabled]="disabled">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div class="btn-group">
+        <button nz-button [ngClass]="{ 'active': getParams.state == 'all'}" (click)="switchState('all')">
+          <span>全部</span>
+          <span *ngIf="getParams.state == 'all'">({{ listsData.pagination.total || 0 }})</span>
+        </button>
+        <button nz-button [ngClass]="{ 'active': getParams.state == 1 }" (click)="switchState(1)">
+          <span>已发布</span>
+          <span *ngIf="getParams.state == 1">({{ listsData.pagination.total || 0 }})</span>
+        </button>
+        <button nz-button [ngClass]="{ 'active': getParams.state == 0 }" (click)="switchState(0)">
+          <span>未发布</span>
+          <span *ngIf="getParams.state == 0">({{ listsData.pagination.total || 0 }})</span>
+        </button>
+        <button nz-button [ngClass]="{ 'active': getParams.state == -1 }" (click)="switchState(-1)">
+          <i class="anticon anticon-wallet"></i>
+          <span>回收站</span>
+          <span *ngIf="getParams.state == -1">({{ listsData.pagination.total || 0 }})</span>
+        </button>
+      </div>
+      <div class="btn-group flex-center">
+        <nz-select style="width: 120px;" [nzPlaceHolder]="'批量操作'" [(ngModel)]="state" (ngModelChange)="moveState($event)" [nzDisabled]="isDisabled">
+          <nz-option *ngFor="let option of stateOptions" [nzLabel]="option.label" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </div>
+      <!-- <div class="btn-group ">
+        <button nz-button [nzType]="'primary'" (click)="refreshArticles()">
+          <i class="anticon anticon-reload"></i>
+          <span>刷新</span>
+        </button>
+        <button nz-button [nzType]="'primary'" (click)="resetGetParams()">
+          <i class="anticon anticon-delete"></i>
+          <span>清空搜索数据</span>
+        </button>
+      </div> -->
+      <div class="pull-right">
+        <div class="input-group flex">
+          <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+          </span>
+        </div>
+      </div>
+      <!-- <div class="pull-right pull-add">
+        <button nz-button [nzType]="'primary'" (click)="refreshArticles()">
+          <i class="anticon anticon-"></i>
+          <span>新增工具类管理</span>
+        </button>
+      </div> -->
+    </div>
+    <div class="table-lists">
+      <nz-table #nzTable [nzTotal]="listsData.pagination.total" [nzLoading]="isLoading" [nzAjaxData]="listsData.data" [nzPageSize]="listsData.pagination.pre_page"
+        (nzDataChange)="displayDataChange($event)" (nzPageIndexChange)="refreshStatus()" [nzPageIndex]="listsData.pagination.current_page"
+        (nzPageIndexChangeClick)="asd($event)" (nzPageSizeChange)="refreshStatus()">
+        <thead nz-thead>
+          <tr>
+            <th nz-th nzCheckbox>
+              <label nz-checkbox [(ngModel)]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"> ID </label>
+            </th>
+            <th nz-th [nzWidth]="'10%'">
+              <span>标题</span>
+            </th>
+            <th nz-th [nzWidth]="'10%'">
+              <span>副标题</span>
+            </th>
+            <th nz-th [nzWidth]="'10%'">
+              <span>缩略图</span>
+            </th>
+            <th nz-th [nzWidth]="'24%'">
+              <span>摘要</span>
+            </th>
+            <th nz-th>
+              <span>文章分类</span>
+            </th>
+            <th nz-th>
+              <span>标签管理</span>
+            </th>
+            <th nz-th>
+              <span>发布状态</span>
+            </th>
+            <th nz-th>
+              <span>发布时间</span>
+            </th>
+            <th nz-th class="flex-center">
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let list of listsData.data">
+            <td nz-td nzCheckbox>
+              <label nz-checkbox [(ngModel)]="list.checked" (ngModelChange)="refreshStatus()"> {{list.id }}</label>
+            </td>
+            <td nz-td>
+              <div class="new-text">{{ list.title | stringStr:20 }}</div>
+            </td>
+            <td nz-td>
+              <div class="new-text">{{ list.subtitle | stringStr:20 }}</div>
+            </td>
+            <td nz-td>
+              <div class="list-img">
+                <img src="{{ imgRoot + list.pc_img}}">
+              </div>
+            </td>
+            <td nz-td>
+              <div class="new-text" [innerHTML]="list.summary | stringStr:100"></div>
+            </td>
+            <td nz-td>
+              <span *ngIf="list.category == 0">测试类型</span>
+              <span *ngIf="list.category == 1">知识库</span>
+            </td>
+            <td nz-td>
+              <p *ngIf="!list.tags?.length">暂无标签</p>
+              <div *ngIf="list.tags" >
+                <p style="padding: 5px 0;" *ngFor="let item of list.tags">{{ item.name }}</p>
+              </div>
+            </td>
+            <td nz-td>
+              <span *ngIf="list.status == 1">已发布</span>
+              <span *ngIf="list.status == 0">草稿</span>
+              <span *ngIf="list.status == -1">回收站</span>
+            </td>
+            <td nz-td>{{ list.time | date:"yyyy-MM-dd HH:mm:ss" }}</td>
+            <td nz-td class="btn-lists">
+              <div class="flex-center">
+                <a class="btn btn-info" [routerLink]="['/forum/editor/', list._id]">编辑</a>
+              </div>
+              <div class="flex-center" *ngIf="list.status == 0">
+                <button class="btn btn-success" (click)="singleState([list._id],1)">快速发布</button>
+              </div>
+              <div class="flex-center" *ngIf="list.status == 1">
+                <button class="btn btn-success" (click)="singleState([list._id],0)">移到草稿</button>
+              </div>
+              <div class="flex-center" *ngIf="list.status == -1">
+                <button class="btn btn-success" (click)="singleState([list._id],1)">恢复文章</button>
+              </div>
+              <!-- <div class="flex-center" *ngIf="list.status == 1">
+                <a class="btn btn-info" router->查看新闻</a>
+              </div> -->
+              <div class="flex-center" *ngIf="list.status != -1">
+                <button class="btn btn-danger" (click)="singleState([list._id],-1)">移回收站</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</ba-card>

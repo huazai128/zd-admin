@@ -1,0 +1,38 @@
+<ba-card title="话题详情">
+  <div class="detail-box">
+    <div class="head">
+      <div class="title flex jc-between">
+        <h3>{{community.title}}</h3>
+        <div class="flex btn-opt">
+          <div nzCheckbox class="check flex-center">
+            <label nz-checkbox [(ngModel)]="!!community.choice" (ngModelChange)="checkChioce($event,community._id)">{{ community.choice ? "取消":"" }}精选</label>
+          </div>
+          <div nzCheckbox class="check flex-center">
+            <label nz-checkbox [(ngModel)]="!!community.recommend" (ngModelChange)="checkRecommend($event,community._id)">{{ community.recommend ? "取消":"" }}推荐</label>
+          </div>
+          <div class="flex-center btn-width" *ngIf="community.state == 0">
+            <button class="btn btn-success" (click)="singleState([community._id],1)">快速发布</button>
+          </div>
+          <div class="flex-center btn-width" *ngIf="community.state == 1">
+            <button class="btn btn-info" (click)="singleState([community._id],0)">屏蔽</button>
+          </div>
+          <div class="flex-center btn-width" *ngIf="community.state == -1">
+            <button class="btn btn-success" (click)="singleState([community._id],1)">恢复文章</button>
+          </div>
+          <div class="flex-center btn-width" *ngIf="community.state != -1">
+            <button class="btn btn-danger" (click)="singleState([community._id],-1)">移至回收站</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex changes">
+        <span>作者 {{ community.userId?.name }}</span>
+        <span>发布于 {{ community.create_up }}</span>
+        <span>{{ community.meta?.links }} 次浏览</span>
+      </div>
+    </div>
+    <div class="content" [innerHTML]="community.content"></div>
+  </div>
+</ba-card>
+
+<comment-lists [id]="community.id" ></comment-lists>
+

@@ -1,0 +1,53 @@
+<div class="article-list">
+  <div class="tool"></div>
+  <div class="table-lists">
+    <nz-table #nzTable [nzTotal]="pagination?.total" 
+      [nzLoading]="isLoading" 
+      [nzAjaxData]="tags" 
+      [nzPageSize]="pagination?.pre_page"
+      [nzPageIndex]="pagination?.current_page"
+      (nzPageIndexChangeClick)="asd($event)">
+      <thead nz-thead>
+        <tr>
+          <th nz-th [nzWidth]="'15%'" class="flex-center">
+            <span>启用状态</span>
+          </th>
+          <th nz-th [nzWidth]="'45%'">
+            <span>标签名称</span>
+          </th>
+          <th nz-th>
+            <span>创建时间</span>
+          </th>
+          <th nz-th class="flex-center">
+            <span>操作</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let list of tags">
+          <td nz-td nzCheckbox>
+            <label nz-checkbox [(ngModel)]="list.enable" (ngModelChange)="topOption([list._id],list.enable)"></label>
+          </td>
+          <td nz-td>
+            <div class="new-text">{{ list.name | stringStr:20 }}</div>
+          </td>
+          <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
+          <td nz-td class="btn-lists">
+            <div class="flex-center">
+              <button class="btn btn-info" (click)="editorTagId(list._id)">编辑</button>
+            </div>
+            <div class="flex-center" *ngIf="list.top == 0">
+              <button class="btn btn-success" (click)="topOption([list._id],1)">置顶</button>
+            </div>
+            <div class="flex-center" *ngIf="list.top == 1">
+              <button class="btn btn-success" (click)="topOption([list._id],0)">取消置顶</button>
+            </div>
+            <div class="flex-center">
+              <button class="btn btn-danger" (click)="removeTag(list._id)">删除</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

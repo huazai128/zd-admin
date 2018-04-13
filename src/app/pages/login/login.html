@@ -1,0 +1,31 @@
+<div class="login flex flex-center">
+  <div class="login-box">
+    <h1>掌动管理后台</h1>
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="postLogin()">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="email">账号</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="20" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="email" [nzPlaceHolder]="'账号'" [nzId]="'email'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="password">密码</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="20" [nzXs]="24" nzHasFeedback>
+          <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'密码'" [nzSize]="'large'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-control>
+          <label nz-checkbox formControlName="remember">
+            <span>记住密码</span>
+          </label>
+          <button nz-button class="login-form-button" [disabled]="!loginForm.valid" [nzType]="'primary'" [nzSize]="'large'">登录</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

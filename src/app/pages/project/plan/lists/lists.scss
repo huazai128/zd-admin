@@ -1,0 +1,29 @@
+.apply {
+  .ant-calendar-picker {
+    height: 30px;
+    line-height: 30px;
+    background: #23282d;
+    border-radius: 4px;
+    margin-top: -4px;
+    .ant-input>.ant-calendar-range-picker-input {
+      height: auto;
+    }
+    .ant-calendar-range-picker-separator {
+      height: 30px;
+      line-height: 30px;
+      color: #fff;
+    }
+  }
+  .tools {
+    position: relative;
+    .out-file {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

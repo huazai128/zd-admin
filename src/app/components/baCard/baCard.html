@@ -1,0 +1,11 @@
+<div baCardBlur class="card {{baCardClass || ''}}">
+  <div *ngIf="title" class="card-header flex jc-between">
+    <h3 class="card-title">{{title}}</h3>
+    <div *ngIf="selectType">
+      <ng-content select=".add"></ng-content>
+    </div>
+  </div>
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+</div>

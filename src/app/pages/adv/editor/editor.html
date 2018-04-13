@@ -1,0 +1,66 @@
+<ba-card [title]=" adv_id ? '编辑广告位' : '新增广告位'">
+  <div class="editor">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="title" nz-form-item-required>标题</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="title" [nzId]="'title'" [nzPlaceHolder]="'广告标题'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="link">PC端链接</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzType]="'url'" [nzPlaceHolder]="'请输入摘要内容'" formControlName="link" [nzId]="'link'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="link">移动端链接</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzType]="'yurl'" [nzPlaceHolder]="'请输入摘要内容'" formControlName="yurl" [nzId]="'yurl'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="sort" nz-form-item-required>排序</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input-number [nzSize]="'large'" formControlName="sort" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="sort" nz-form-item-required>广告图</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          <nz-upload class="avatar-uploader" nzAction="{{ imgUplaod }}" [nzHeaders]='headers' nzName="bg" [nzShowUploadList]="false"
+            [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,1)">
+            <i *ngIf="!avatarUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+            <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
+          </nz-upload>
+          <p>PC图片尺寸宽高为：1920 * 1000的比例上传</p>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          <nz-upload class="avatar-uploader" nzAction="{{ imgUplaod }}" [nzHeaders]='headers' nzName="bg" [nzShowUploadList]="false"
+            [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,2)">
+            <i *ngIf="!mAvatarUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+            <img *ngIf="mAvatarUrl" [src]="mAvatarUrl" class="avatar">
+          </nz-upload>
+          <p>移动端图片尺寸宽高为：375 * 298的比例上传</p>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-col [nzSm]="2" [nzXs]="24">
+        </div>
+        <div nz-col [nzSm]="6" [nzXs]="24">
+          <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="!validateForm.valid">发布</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ba-card>

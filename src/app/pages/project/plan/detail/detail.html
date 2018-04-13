@@ -1,0 +1,32 @@
+<ba-card title="详情">
+  <div class="apply-deatil">
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">公司名称：</div>
+      <div nz-col [nzSm]="20">{{ detail.company }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">公司规模：</div>
+      <div nz-col [nzSm]="20">{{ detail.scale }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">申请人姓名：</div>
+      <div nz-col [nzSm]="20">{{ detail.name }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+        <div nz-col [nzSm]="2">行业：</div>
+        <div nz-col [nzSm]="20">{{ detail.industry }}</div>
+      </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">手机号码：</div>
+      <div nz-col [nzSm]="20">{{ detail.phone }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">邮箱：</div>
+      <div nz-col [nzSm]="20">{{ detail.email }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">申请时间：</div>
+      <div nz-col [nzSm]="20">{{ detail.create_at | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+    </div>
+  </div>
+</ba-card>

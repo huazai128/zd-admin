@@ -1,0 +1,54 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": false,
+    "target": "es5",
+    "allowJs": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl": "src/",
+    "paths": {
+      "@themes": [
+        "app/themes"
+      ],
+      "@themes/*": [
+        "app/themes/*"
+      ],
+      "@components": [
+        "app/components"
+      ],
+      "@components/*": [
+        "app/components/*"
+      ],
+      "@validators": [
+        "app/validators"
+      ],
+      "@config": [
+        "app/config"
+      ],
+      "@app": [
+        "app/*"
+      ],
+      "@pipes": [
+        "app/pipes"
+      ],
+      "@store/*": [
+        "app/store/*"
+      ],
+      "@core": [
+        "app/core"
+      ]
+    }
+  }
+}

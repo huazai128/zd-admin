@@ -1,0 +1,40 @@
+<ba-card title="详情">
+  <div class="apply-deatil">
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">测试类型：</div>
+      <div nz-col [nzSm]="20">{{ detail.mold ? "兼容测试" : "功能测试" }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">公司名称：</div>
+      <div nz-col [nzSm]="20">{{ detail.company }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">联系人：</div>
+      <div nz-col [nzSm]="20">{{ detail.name }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">职位：</div>
+      <div nz-col [nzSm]="20">{{ detail.job }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">手机号码：</div>
+      <div nz-col [nzSm]="20">{{ detail.phone }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">邮箱：</div>
+      <div nz-col [nzSm]="20">{{ detail.email }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">QQ：</div>
+      <div nz-col [nzSm]="20">{{ detail.qq }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">申请时间：</div>
+      <div nz-col [nzSm]="20">{{ detail.create_at | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+    </div>
+    <div class="detail-group" nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="2">咨询内容：</div>
+      <div nz-col [nzSm]="20">{{ detail.content }}</div>
+    </div>
+  </div>
+</ba-card>

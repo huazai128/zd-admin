@@ -1,0 +1,10 @@
+.apply-deatil{
+  .detail-group{
+    padding-bottom: 15px;
+    font-size: 14px;
+    color: #999;
+    & > div:last-child{
+      color: #fff;
+    }
+  }
+}

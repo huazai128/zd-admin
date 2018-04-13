@@ -1,0 +1,31 @@
+<div class="tags">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <div nz-form-item nz-row [nzGutter]="24">
+      <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+        <label for="name" nz-form-item-required>标签名称</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="18" [nzXs]="24" nzHasFeedback>
+        <nz-input [nzSize]="'large'" formControlName="name" [nzId]="'name'" [nzPlaceHolder]="'请输入标签名称'"></nz-input>
+      </div>
+    </div>
+    <div nz-form-item nz-row [nzGutter]="24">
+      <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+        <label for="name" nz-form-item-required>标签名称</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+        <label nz-checkbox formControlName="enable">
+          <span>启用</span>
+        </label>
+      </div>
+    </div>
+    <div nz-form-item nz-row [nzGutter]="24">
+      <div nz-col [nzSm]="6" [nzXs]="24"></div>
+      <div nz-form-control nz-col [nzSm]="4" [nzXs]="24" nzHasFeedback>
+        <button nz-button type="submit" [nzType]="'primary'" [disabled]="!validateForm.valid">{{ tag ?'修改':'添加' }}标签</button>
+      </div>
+      <div nz-form-control nz-col [nzSm]="4" [nzXs]="24" nzHasFeedback>
+        <button nz-button [nzType]="'default'" (click)="onReset()">重置</button>
+      </div>
+    </div>
+  </form>
+</div>

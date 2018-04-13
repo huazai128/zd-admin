@@ -1,0 +1,28 @@
+@import 'conf/conf';
+@import 'conf/flex';
+@import 'btn';
+.login {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  .login-box{
+    background: #23282d;
+    border-radius: 10px;
+    padding: 0 30px;
+    & > h1{
+      font-size: 40px;
+      font-weight: normal;
+      color: #fff;
+      margin: 50px;
+    }
+    .ant-form-item-label label{
+      font-size: 14px;
+      color: #fff;
+    }
+    .ant-checkbox-wrapper + span, .ant-checkbox + span{
+      color: #fff;
+      font-size: 14px;
+      padding: 0 15px;
+    }
+  }
+}

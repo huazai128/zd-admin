@@ -1,0 +1,109 @@
+<ba-card [title]=" news_id ? '编辑新闻' : '新增新闻'">
+  <div class="editor">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="title" nz-form-item-required>标题</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="title" [nzId]="'title'" [nzPlaceHolder]="'请输入标题'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="summary" nz-form-item-required>摘要</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzRows]="4" [nzType]="'textarea'" [nzPlaceHolder]="'请输入摘要内容'" formControlName="summary" [nzId]="'summary'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="column" nz-form-item-required>栏目</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-select formControlName="column" [nzSize]="'large'" [nzPlaceHolder]="'请输入栏目'">
+            <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="origin" nz-form-item-required>来源</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="origin" [nzId]="'origin'" [nzPlaceHolder]="'请输入来源'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="auth" nz-form-item-required>作者</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="auth" [nzId]="'auth'" [nzPlaceHolder]="'请输入来源'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="sort" nz-form-item-required>排序</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input-number [nzSize]="'large'" formControlName="sort" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="url" nz-form-item-required>封面</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-upload class="avatar-uploader" nzAction="{{ imgUplaod }}" [nzHeaders]='headers' nzName="bg" [nzShowUploadList]="false"
+            [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,1)">
+            <i *ngIf="!avatarUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+            <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
+          </nz-upload>
+          <p>PC端图片尺寸宽高为：302 * 204的比例上传</p>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-upload class="avatar-uploader" nzAction="{{ imgUplaod }}" [nzHeaders]='headers' nzName="bg" [nzShowUploadList]="false"
+            [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,2)">
+            <i *ngIf="!mAvatarUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+            <img *ngIf="mAvatarUrl" [src]="mAvatarUrl" class="avatar">
+          </nz-upload>
+          <p>移动端图片尺寸宽高为：345 * 175的比例上传</p>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="content" nz-form-item-required>内容</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="16" [nzXs]="24">
+          <ba-ueditor formControlName="content" #full></ba-ueditor>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="time" nz-form-item-required>发布日期</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-datepicker formControlName="time" style="width: 100%;" nzShowTime [nzPlaceHolder]="'请选择发布日期'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-col [nzSm]="2" [nzXs]="6">
+        </div>
+        <div nz-col [nzSm]="2" [nzXs]="6">
+          <button nz-button type="submit" [nzType]="'primary'" [disabled]="!validateForm.valid">发布</button>
+        </div>
+        <div nz-col [nzSm]="2" [nzXs]="6">
+          <div class="btn btn-default btn-size" (click)="reset()">重置表单</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ba-card>
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'是否使用缓存数据'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)"
+  [nzConfirmLoading]="isConfirmLoading">
+  <ng-template #modalContent>
+    <p [style.color]="'#666'">是否使用上次未保存的数据</p>
+  </ng-template>
+</nz-modal>
