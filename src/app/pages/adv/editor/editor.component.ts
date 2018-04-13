@@ -1,4 +1,4 @@
-import { Component,OnChanges,SimpleChanges } from "@angular/core";
+import { Component, OnChanges, SimpleChanges } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { API_ROOT } from '@config';
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [AdvEditorServier]
 })
 
-export class AdvEditorComponent implements OnChanges{
+export class AdvEditorComponent implements OnChanges {
 
   public validateForm: FormGroup;
   public loading: boolean = false;
@@ -28,7 +28,11 @@ export class AdvEditorComponent implements OnChanges{
     "Authorization": 'Bearer ' + localStorage.getItem('id_token')
   }
 
-  constructor(private fb: FormBuilder, private router: Router, private msg: NzMessageService, private editorSer: AdvEditorServier, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, 
+    private router: Router, 
+    private msg: NzMessageService, 
+    private editorSer: AdvEditorServier, 
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.validateForm = this.fb.group({
@@ -44,7 +48,7 @@ export class AdvEditorComponent implements OnChanges{
   submitForm() {
     if (this.validateForm.valid) {
       if (this.imgUrl) {
-        let data = Object.assign(this.validateForm.value, { url: this.imgUrl,murl:this.mImgUrl });
+        let data = Object.assign(this.validateForm.value, { url: this.imgUrl, murl: this.mImgUrl });
         this.editorSer[(<any>this.advData)._id ? 'putAdv' : 'addAdv'](Object.assign(this.advData, data)).subscribe(({ code, message }) => {
           if (code) {
             this.validateForm.reset(); // 重置表单
@@ -62,12 +66,10 @@ export class AdvEditorComponent implements OnChanges{
       }
     }
   }
-
   // 
-  ngOnChanges(changs:SimpleChanges){
+  ngOnChanges(changs: SimpleChanges) {
 
   }
-
   // 文件上传
   beforeUpload = (file: File) => {
     let types = ['jpeg', 'png', 'jpg'];
@@ -90,7 +92,7 @@ export class AdvEditorComponent implements OnChanges{
   }
 
   // 监听文件改变
-  handleChange(info: { file: UploadFile },type:number) {
+  handleChange(info: { file: UploadFile }, type: number) {
     if (info.file.status === 'uploading') {
       this.loading = true;
       return;
@@ -98,18 +100,17 @@ export class AdvEditorComponent implements OnChanges{
     if (info.file.status === 'done') {
       this.getBase64(info.file.originFileObj, (img: any) => {
         this.loading = false;
-        if(Object.is(type,1)){
+        if (Object.is(type, 1)) {
           this.avatarUrl = img;
-        }else{
+        } else {
           this.mAvatarUrl = img;
         }
-        
       });
     }
     if (!!info.file.response && info.file.response.code) {
-      if(Object.is(type,1)){
+      if (Object.is(type, 1)) {
         this.imgUrl = info.file.response.result.path;
-      }else{
+      } else {
         this.mImgUrl = info.file.response.result.path;;
       }
       this.msg.success(info.file.response.message);
@@ -127,7 +128,7 @@ export class AdvEditorComponent implements OnChanges{
   getAdv(id: string) {
     this.editorSer.getAdv(id).subscribe(({ result }) => {
       this.advData = result;
-      this.validateForm.setValue({ 'title': result.title, 'link': result.link, 'sort': result.sort });
+      this.validateForm.setValue({ 'title': result.title, 'link': result.link, yurl: result.yurl, 'sort': result.sort });
       this.avatarUrl = this.imgRoot + result.url;
       this.mAvatarUrl = this.imgRoot + result.murl;
       this.imgUrl = result.url;

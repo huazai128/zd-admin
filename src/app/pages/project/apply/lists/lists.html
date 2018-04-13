@@ -139,7 +139,12 @@
             </td>
             <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
             <td nz-td class="btn-lists">
-              <p style="text-align:center;margin-bottom: 10px;">{{ list.qq }}</p>
+              <p style="text-align:center;margin-bottom: 10px;">
+                <span *ngIf="list.process === 0">完成申请</span>
+                <span *ngIf="list.process === 1">确认需求</span>
+                <span *ngIf="list.process === 2">技术测试</span>
+                <span *ngIf="list.process === 3">结果交付</span>
+              </p>
               <div class="flex-center">
                 <button class="btn btn-success" (click)="showModal(list._id)">修改状态</button>
               </div>
@@ -204,6 +209,7 @@
           </tr>
           <tr nz-tbody-tr *ngFor="let list of fileDatas;let idx = index">
             <td nz-td>
+              {{list.process}}
               <span *ngIf="idx === 0">确认需求</span>
               <span *ngIf="idx === 1">技术测试 </span>
               <span *ngIf="idx === 2">结果交付</span>
@@ -213,9 +219,7 @@
             </td>
             <td nz-td class="btn-lists">
               <div>
-                <nz-upload
-                  nzAction="{{ imgUplaod + '?process=' + list.process + '&id=' + list._id }}"
-                  [nzHeaders]='headers' [nzData]="file"
+                <nz-upload nzAction="{{ imgUplaod + '?process=' + list.process + '&id=' + list._id }}" [nzHeaders]='headers' [nzData]="file"
                   nzName="bg" [nzShowUploadList]="false" (nzChange)="handleChange($event)">
                   <button nz-button class="btn btn-success" [disabled]="!list.open">
                     <i class="anticon anticon-upload"></i>
@@ -224,11 +228,12 @@
                 </nz-upload>
               </div>
               <div>
-                <button nz-button class="btn btn-danger" [disabled]="!list.url">删除</button>
+                <button nz-button class="btn btn-danger" [disabled]="!list.open">删除</button>
               </div>
             </td>
             <td nz-td nzCheckbox>
-              <label nz-checkbox [(ngModel)]="list.state" [disabled]="!list.url"></label>
+              <label nz-checkbox [(ngModel)]="list.state" (ngModelChange)="changeState({ state:list.state,process:idx + 1,id:list._id });"
+                [disabled]="!list.open"></label>
             </td>
           </tr>
         </tbody>

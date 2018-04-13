@@ -152,12 +152,10 @@ export class ApplyListsComponent {
     this.listsData.data.length && (this.allChecked = allChecked);
     this.indeterminate = (!allChecked) && (!allUnChecked);
   }
-
   // 分页按钮
   public asd(page: number): void {
     this.getLists({ page: page });
   }
-
   // 全选
   public checkAll(value): void {
     this.listsData.data.forEach((item) => {
@@ -168,36 +166,36 @@ export class ApplyListsComponent {
     value && (this.isDisabled = false);
     !value && (this.isDisabled = true);
   }
-
   // 操作
   public singleState(ids: Array<string>, active: number) {
     this.moveOptions(ids, active);
   }
-
   // 显示弹窗
   public showModal(value): void {
     this.isVisible = true;
     this.file.apply_id = value;
     this.getFiles();
   }
-
   // 获取文件
   private getFiles(): void {
+    this.getInitData();
     this.httpSer.getFiles({ apply_id: this.file.apply_id }).subscribe(({ code, result }) => {
       if (result.data.length) {
-        this.fileDatas = [...result.data.slice(0, 3), ...this.fileDatas.slice(0, (result.data.length >= 3) ? 0 : (3 - result.data.length))];
+        this.fileDatas = [...result.data.slice(0, 3), ...this.fileDatas.slice(result.data.length, 3)];
         let idx = 0;
-        this.fileDatas.map((item,index) => {
-          item.url && (item.open = true);
-          item.url && !!item.state && (idx = index + 1);
-          !item.url && (item.open = false);
+        let arr = this.fileDatas.filter((item) => !!Number(item.state));
+        if (arr.length) {
+          idx = arr.length;
+          this.fileDatas[idx - 1].open = true;
+        }
+        this.fileDatas.map((item, index) => {
+          !Number(item.state) && (item.open = false);
         })
         this.fileDatas[idx].open = true;
-      } else {
-        this.getInitData();
       }
     })
   }
+  // 重新初始化数据
   private getInitData(): void {
     this.fileDatas = [
       { url: '', state: false, _id: "", process: 1, open: true },
@@ -205,7 +203,6 @@ export class ApplyListsComponent {
       { url: '', state: false, _id: "", process: 3 },
     ]
   }
-
   // 监听文件改变
   handleChange(info: { file: UploadFile }, type: number) {
     this.file.process = type;
@@ -218,7 +215,6 @@ export class ApplyListsComponent {
       this.getFiles();
     }
   }
-
   // 确认
   public handleOk(): void {
     this.isVisible = false;
@@ -228,4 +224,18 @@ export class ApplyListsComponent {
     }
     this.getInitData();
   }
-}
+  // 改变文件状态
+  public changeState(data: any): void {
+    data.apply_id = this.file.apply_id;
+    data.state = data.state ? 1 : 0;
+    this.httpSer[data.id ? 'putFileId' : 'addFile'](data).subscribe((res) => {
+      this.getFiles();
+      this.getLists();
+    })
+  }
+
+  // 输出文件
+  public outFile():void{
+    
+  }
+} 

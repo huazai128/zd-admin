@@ -11,7 +11,7 @@ export class ApplyService {
   public getApplyId(id: string): Observable<any> {
     return this.httpSer.get(`apply/${id}`);
   }
-  
+
   // 获取数据集合
   public getLists(data: any = {}): Observable<any> {
     return this.httpSer.get("apply", data);
@@ -21,9 +21,22 @@ export class ApplyService {
   public moveState(data: Array<string> = [], active: number): Observable<any> {
     return this.httpSer.patch("apply", { ids: data, state: active });
   }
-  
+
   // 获取文件
-  public getFiles(data:any = {}): Observable<any>{
+  public getFiles(data: any = {}): Observable<any> {
     return this.httpSer.get("image", data);
   }
+
+  // 修改文件状态
+  public putFileId(data: any = {}): Observable<any> {
+    return this.httpSer.put(`image/${data.id}`, data);
+  }
+
+  // 文件保存、
+  public addFile(data: any = {}): Observable<any> {
+    return this.httpSer.post("image", data);
+  }
+
+  // 导出文件
+  
 }
