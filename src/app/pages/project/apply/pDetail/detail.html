@@ -1,0 +1,92 @@
+<ba-card [title]="_id ? '编辑' : '新增'">
+  <div class="editor">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="mold" nz-form-item-required>测试类型</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-select formControlName="mold" [nzSize]="'large'" [nzPlaceHolder]="'请选择测试类型'">
+            <nz-option *ngFor="let option of moldOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="company" nz-form-item-required>公司名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="company" [nzId]="'company'" [nzPlaceHolder]="'请输入公司名称'"></nz-input>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="name" nz-form-item-required>联系人名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="name" [nzId]="'name'" [nzPlaceHolder]="'请输入姓名'"></nz-input>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="job" nz-form-item-required>职位</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入职位'" formControlName="job" [nzId]="'job'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="phone" nz-form-item-required>手机号</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入手机号码'" formControlName="phone" [nzId]="'phone'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="email" nz-form-item-required>邮箱</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入邮箱'" formControlName="email" [nzId]="'email'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="qq" nz-form-item-required>QQ</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" nzHasFeedback>
+          <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入QQ号码'" formControlName="qq" [nzId]="'qq'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-form-label nz-col [nzSm]="2" [nzXs]="24">
+          <label for="content" nz-form-item-required>内容</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="16" [nzXs]="24">
+          <ba-ueditor formControlName="content"></ba-ueditor>
+        </div>
+      </div>
+      <div nz-form-item nz-row [nzGutter]="24">
+        <div nz-col [nzSm]="2" [nzXs]="6">
+        </div>
+        <div nz-col [nzSm]="2" [nzXs]="6">
+          <button nz-button type="submit" [nzType]="'primary'" [disabled]="!validateForm.valid">发布</button>
+        </div>
+        <div nz-col [nzSm]="2" [nzXs]="6">
+          <div class="btn btn-default btn-size" (click)="reset()">重置表单</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ba-card>
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'是否使用缓存数据'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)"
+  [nzConfirmLoading]="isConfirmLoading">
+  <ng-template #modalContent>
+    <p [style.color]="'#666'">是否使用上次未保存的数据</p>
+  </ng-template>
+</nz-modal>

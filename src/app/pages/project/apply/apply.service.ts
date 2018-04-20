@@ -17,9 +17,19 @@ export class ApplyService {
     return this.httpSer.get("apply", data);
   }
 
+  // 新增
+  public addApply(data: any = {}): Observable<any> {
+    return this.httpSer.post("apply", data);
+  }
+
   // 批量操作
   public moveState(data: Array<string> = [], active: number): Observable<any> {
     return this.httpSer.patch("apply", { ids: data, state: active });
+  }
+
+  // 修改单个文件
+  public putApplyId(data: any = {}): Observable<any> {
+    return this.httpSer.put(`apply/${data._id}`, data);
   }
 
   // 获取文件
@@ -38,5 +48,5 @@ export class ApplyService {
   }
 
   // 导出文件
-  
+
 }

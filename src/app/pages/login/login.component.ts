@@ -16,7 +16,9 @@ export class LoginComponent {
 
   public loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _service: LoginService, private router: Router) { }
+  constructor(private fb: FormBuilder,
+    private _service: LoginService,
+    private router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -28,12 +30,13 @@ export class LoginComponent {
 
   postLogin() {
     if (this.loginForm.valid) {
-      let obj = {type: 2}
-      this._service.login(Object.assign(this.loginForm.value,obj)).subscribe(({ result }) => {
+      let obj = { type: 2 }
+      this._service.login(Object.assign(this.loginForm.value, obj)).subscribe(({ result }) => {
         if (result) {
           localStorage.setItem("id_token", result.token);
           this.router.navigate(["/"]);
         } else {
+          
         }
       })
     }

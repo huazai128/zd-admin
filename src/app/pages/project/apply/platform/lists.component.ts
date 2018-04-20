@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd,RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd, RouterStateSnapshot } from '@angular/router';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { Subject } from 'rxjs/Subject';
 import { distinctUntilChanged, debounceTime, filter, map, mergeMap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { API_ROOT } from '@config';
   providers: [ApplyService]
 })
 
-export class ApplyListsComponent {
+export class PlatformListsComponent {
   public keywords: string;
   public isLoading: boolean = false;
   public loading: boolean = false;
@@ -26,7 +26,8 @@ export class ApplyListsComponent {
   public state: string = "all";
   private searchTerms = new Subject<string>(); // 搜索
   public time: Array<any> = [];
-  public style:number = 0;
+  public userShow: boolean = false;
+  public id: string;
   public file: any = {
     apply_id: '',
     state: 0,
@@ -68,10 +69,6 @@ export class ApplyListsComponent {
     private msg: NzMessageService,
     private router: Router,
     private route: ActivatedRoute) {
-      let { style } =this.route.snapshot.queryParams;
-      if(style){
-        this.style = style;
-      }
   }
   // 初始化
   ngOnInit() {
@@ -102,7 +99,7 @@ export class ApplyListsComponent {
     if (!params.page || Object.is(params.page, 1)) {
       this.listsData.pagination.current_page = 1;
     }
-    params.style = this.style;
+    params.style = 1;
     this.httpSer.getLists(params).subscribe(({ code, result }) => {
       if (code) this.listsData = result;
     })
@@ -142,6 +139,7 @@ export class ApplyListsComponent {
       this.getLists();
     });
   }
+
   // 搜索
   public getKeyword(value: string) {
     this.searchTerms.next(value);
@@ -245,8 +243,28 @@ export class ApplyListsComponent {
     })
   }
 
-  // 输出文件
-  public outFile(): void {
-
+  // 显示派单弹窗
+  public showModalUser(id): void {
+    this.id = id;
+    this.userShow = true;
   }
+
+  // 隐藏派单弹窗
+  public onHide(): void {
+    this.userShow = false;
+  }
+
+  // 获取用户ID
+  public selectUserId(user_id): void {
+    this.putUser({ _id: this.id, p_user: user_id, p_state: 1 })
+  }
+
+  // 派单
+  private putUser(params): void {
+    this.httpSer.putApplyId(params).subscribe((res) => {
+      this.userShow = false;
+      this.getLists();
+    })
+  }
+
 } 

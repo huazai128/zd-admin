@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule, HttpService } from '@core';
-import { BaCardModule } from '@components';
+import { BaCardModule,UEditorModule } from '@components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NzFormModule,
@@ -20,11 +20,13 @@ import {
 import { PipesModule } from '@pipes';
 import { routing } from './project.routing';
 
-import { ProjectComponent } from './project.component';
 import { ApplyListsComponent } from './apply/lists/lists.component';
 import { ApllyDetailComponent } from './apply/detail/detail.component';
 import { PlanListsComponent } from './plan/lists/lists.component';
 import { PlanDetailComponent } from './plan/detail/detail.component';
+import { PDetailComponent } from './apply/pDetail/detail.component';
+import { PlatformListsComponent } from './apply/platform/lists.component';
+import { TestComponent } from './apply/platform/component/test.component';
 
 @NgModule({
   imports: [
@@ -47,15 +49,18 @@ import { PlanDetailComponent } from './plan/detail/detail.component';
     NzInputNumberModule,
     FormsModule,
     ReactiveFormsModule,
+    UEditorModule,
     PipesModule,
     routing,
   ],
   declarations: [
-    ProjectComponent,
     ApplyListsComponent,
     PlanListsComponent,
     ApllyDetailComponent,
     PlanDetailComponent,
+    PDetailComponent,
+    PlatformListsComponent,
+    TestComponent,
   ],
   providers: [HttpService]
 })

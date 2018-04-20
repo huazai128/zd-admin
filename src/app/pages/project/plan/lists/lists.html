@@ -56,7 +56,9 @@
             <th nz-th nzCheckbox>
               <label nz-checkbox [(ngModel)]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"> ID </label>
             </th>
-            <th nz-th [nzWidth]="'15%'"><span>公司名称</span></th>
+            <th nz-th [nzWidth]="'15%'">
+              <span>公司名称</span>
+            </th>
             <th nz-th>
               <span>公司规模</span>
             </th>
@@ -78,8 +80,10 @@
             <th nz-th>
               <span>申请时间</span>
             </th>
-            <th nz-th class="flex-center">
-              <span>操作</span>
+            <th nz-th>
+              <p class="flex-center">
+                <span>操作</span>
+              </p>
             </th>
           </tr>
         </thead>

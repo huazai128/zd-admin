@@ -1,4 +1,7 @@
-<ba-card [title]="'测试申请'" baCardClass="with-scroll" selectType="add">
+<ba-card [title]="'众测平台'" baCardClass="with-scroll" selectType="add">
+  <div class="add">
+    <a routerLink="/project/p_detail">新增</a>
+  </div>
   <div class="article-list apply">
     <div class="tools flex">
       <div class="out-file">
@@ -66,7 +69,7 @@
             <th nz-th>
               <span>测试类型</span>
             </th>
-            <th nz-th [nzWidth]="'20%'">
+            <th nz-th [nzWidth]="'15%'">
               <span>咨询内容</span>
             </th>
             <th nz-th>
@@ -92,6 +95,9 @@
             </th>
             <th nz-th>
               <span>申请时间</span>
+            </th>
+            <th nz-th>
+              <span>派单状态</span>
             </th>
             <th nz-th>
               <span>测试状态</span>
@@ -142,6 +148,15 @@
             <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
             <td nz-td class="btn-lists">
               <p style="text-align:center;margin-bottom: 10px;">
+                <span *ngIf="list.p_state === 0">派单中</span>
+                <span *ngIf="list.p_state === 1">已完成派单</span>
+              </p>
+              <div class="flex-center">
+                <button nz-button class="btn btn-success" style="width: 80px" (click)="showModalUser(list._id)" [disabled]="list.p_state">派单</button>
+              </div>
+            </td>
+            <td nz-td class="btn-lists">
+              <p style="text-align:center;margin-bottom: 10px;">
                 <span *ngIf="list.process === 0">完成申请</span>
                 <span *ngIf="list.process === 1">确认需求</span>
                 <span *ngIf="list.process === 2">技术测试</span>
@@ -162,7 +177,7 @@
                 <button class="btn btn-success" (click)="singleState([list._id],1)">通过审核</button>
               </div>
               <div class="flex-center">
-                <a class="btn btn-info" [routerLink]="[ '/project/detail/', list._id]">查看详情</a>
+                <a class="btn btn-info" [routerLink]="[ '/project/p_detail/' , list._id]">查看详情</a>
               </div>
               <div class="flex-center" *ngIf="list.state != -1">
                 <button class="btn btn-danger" (click)="singleState([list._id],-1)">移至回收站</button>
@@ -243,3 +258,5 @@
     </div>
   </ng-template>
 </nz-modal>
+<plat-user [isVisible]="userShow" [id]="id" (onHideModal)="onHide()" (onOk)="selectUserId($event)"></plat-user>
+

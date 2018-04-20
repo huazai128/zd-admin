@@ -12,7 +12,8 @@ const routes: Routes = [
       { path: "forum", loadChildren: "app/pages/forum/forum.module#ForumModule" },
       { path: "tag", loadChildren: "app/pages/tag/tag.module#TagModule" },
       { path: "community", loadChildren: "app/pages/community/community.module#CommunityModule" },
-      { path: "project", loadChildren: "app/pages/project/project.module#ProjectModule" }
+      { path: "project", loadChildren: "app/pages/project/project.module#ProjectModule" },
+      { path: "user", loadChildren: "app/pages/user/user.module#UserModule" },
     ]
   },
   {

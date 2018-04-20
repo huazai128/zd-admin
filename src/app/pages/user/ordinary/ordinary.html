@@ -1,0 +1,142 @@
+<ba-card title="普通用户管理">
+  <div class="article-list">
+    <div class="tools flex">
+      <!-- <div class="btn-group flex-center">
+        <nz-select style="width: 120px;" [nzPlaceHolder]="'批量操作'" [(ngModel)]="state" (ngModelChange)="moveState($event)" [nzDisabled]="isDisabled">
+          <nz-option *ngFor="let option of stateOptions" [nzLabel]="option.label" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </div> -->
+      <div class="pull-right">
+        <div class="input-group flex">
+          <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="table-lists">
+      <nz-table #nzTable [nzTotal]="listsData.pagination.total" [nzLoading]="isLoading" [nzAjaxData]="listsData.data" [nzPageSize]="listsData.pagination.pre_page"
+        [nzPageIndex]="listsData.pagination.current_page"
+        (nzPageIndexChangeClick)="asd($event)" >
+        <thead nz-thead>
+          <tr>
+            <!-- <th nz-th nzCheckbox>
+              <label nz-checkbox [(ngModel)]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"> ID </label>
+            </th> -->
+            <th nz-th>
+              <span>用户名</span>
+            </th>
+            <th nz-th>
+              <span>邮箱</span>
+            </th>
+            <th nz-th>
+              <span>密码</span>
+            </th>
+            <th nz-th>
+              <span>真实姓名</span>
+            </th>
+            <th nz-th>
+              <span>身份证号</span>
+            </th>
+            <th nz-th>
+              <span>注册时间</span>
+            </th>
+            <th nz-th>
+              <span>状态</span>
+            </th>
+            <th nz-th class="flex-center">
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let list of listsData.data">
+            <!-- <td nz-td nzCheckbox>
+              <label nz-checkbox [(ngModel)]="list.checked" (ngModelChange)="refreshStatus()"> {{list.id }}</label>
+            </td> -->
+            <td nz-td>
+              <div class="new-text">{{ list.username}}</div>
+            </td>
+            <td nz-td>
+              <div class="new-text">{{ list.email }}</div>
+            </td>
+            <td nz-td>
+              <div class="btn-lists">
+                <button class="btn btn-danger" (click)="resetPws(list._id,reset,1,'重置密码')">重置密码</button>
+              </div>
+            </td>
+            <td nz-td>
+              <span>{{ list.name }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.card }}</span>
+            </td>
+            <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
+            <td nz-td>
+              <span *ngIf="list.status === 1">正常</span>
+              <span *ngIf="list.status === 0">禁言一小时</span>
+              <span *ngIf="list.status === -1">禁言{{ list.time_name }}</span>
+              <span *ngIf="list.status === -2">禁用</span>
+              <span *ngIf="list.status === -3">已删除</span>
+            </td>
+            <td nz-td class="btn-lists">
+              <div class="flex-center" *ngIf="list.status !== -3">
+                <button class="btn btn-success" (click)="resetPws(list._id,pro,2,'禁封操作',list.status)">禁封</button>
+              </div>
+              <div class="flex-center" *ngIf="list.status !== -3">
+                <button class="btn btn-danger" (click)="resetPws(list._id,remove,3,'删除操作')">删除</button>
+              </div>
+              <div class="flex-center" *ngIf="list.status === -3">暂无操作</div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</ba-card>
+
+<ng-template #reset>
+  <p style="color: #bf1b08">确定要重置当前用户密码？</p>
+</ng-template>
+
+<ng-template #pro>
+  <div class="pro-box">
+    <nz-radio-group [(ngModel)]="radioValue">
+      <div class="radio-box">
+        <label nz-radio [nzValue]="1">
+          <span>正常</span>
+        </label>
+      </div>
+      <div class="radio-box">
+        <label nz-radio [nzValue]="0">
+          <span>禁言1小时</span>
+        </label>
+      </div>
+      <div class="flex-center radio-box">
+        <div>
+          <label nz-radio [nzValue]="-1">
+            <span>禁言</span>
+          </label>
+        </div>
+        <div>
+          <nz-input-number [(ngModel)]="demoValue" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+          <nz-select style="width: 80px;" [(ngModel)]="selectedOption">
+            <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="radio-box">
+        <label nz-radio [nzValue]="-2">
+          <span>禁用</span>
+        </label>
+      </div>
+    </nz-radio-group>
+  </div>
+</ng-template>
+
+<ng-template #remove>
+  <p style="color: #bf1b08">确定要删除当前用户！</p>
+</ng-template>

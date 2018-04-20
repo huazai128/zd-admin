@@ -1,0 +1,24 @@
+.modal-box{
+  width: 650px;
+  height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  .input-group{
+    margin-bottom: 15px;
+    input{
+      width: 250px;
+      height: 32px;
+      outline: none;
+      border: 1px solid #e5e5e5;
+      padding: 0 15px;
+      color: #333;
+      border-radius: 5px;
+    }
+  }
+  .select{
+    background: #e5e5e5;
+  }
+}
+.ant-modal{
+  width: 680px !important;
+}

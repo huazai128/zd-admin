@@ -1,0 +1,99 @@
+<ba-card title="禁封用户">
+  <div class="article-list">
+    <div class="tools flex">
+      <!-- <div class="btn-group flex-center">
+          <nz-select style="width: 120px;" [nzPlaceHolder]="'批量操作'" [(ngModel)]="state" (ngModelChange)="moveState($event)" [nzDisabled]="isDisabled">
+            <nz-option *ngFor="let option of stateOptions" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </div> -->
+      <div class="pull-right">
+        <div class="input-group flex">
+          <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="table-lists">
+      <nz-table #nzTable [nzTotal]="listsData.pagination.total" [nzLoading]="isLoading" [nzAjaxData]="listsData.data" [nzPageSize]="listsData.pagination.pre_page"
+        [nzPageIndex]="listsData.pagination.current_page"
+        (nzPageIndexChangeClick)="asd($event)" >
+        <thead nz-thead>
+          <tr>
+            <!-- <th nz-th nzCheckbox>
+                <label nz-checkbox [(ngModel)]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"> ID </label>
+              </th> -->
+            <th nz-th>
+              <span>用户类型</span>
+            </th>
+            <th nz-th>
+              <span>用户名</span>
+            </th>
+            <th nz-th>
+              <span>邮箱</span>
+            </th>
+
+            <th nz-th>
+              <span>真实姓名</span>
+            </th>
+            <th nz-th>
+              <span>身份证号</span>
+            </th>
+            <th nz-th>
+              <span>注册时间</span>
+            </th>
+            <th nz-th>
+              <span>状态</span>
+            </th>
+            <th nz-th class="flex-center">
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let list of listsData.data">
+            <!-- <td nz-td nzCheckbox>
+                <label nz-checkbox [(ngModel)]="list.checked" (ngModelChange)="refreshStatus()"> {{list.id }}</label>
+              </td> -->
+            <td nz-td>
+              <span *ngIf="list.type === 0">普通用户</span>
+              <span *ngIf="list.type === 1">测试开发用户</span>
+            </td>
+            <td nz-td>
+              <div class="new-text">{{ list.username}}</div>
+            </td>
+            <td nz-td>
+              <div class="new-text">{{ list.email }}</div>
+            </td>
+            <td nz-td>
+              <span>{{ list.name }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.card }}</span>
+            </td>
+            <td nz-td>{{ list.time | date:"yyyy-MM-dd HH:mm:ss" }}</td>
+            <td nz-td>
+              <span *ngIf="list.status === 1">正常</span>
+              <span *ngIf="list.status === 0">禁言一小时</span>
+              <span *ngIf="list.status === -1">禁言{{ list.time_name }}</span>
+              <span *ngIf="list.status === -2">禁用</span>
+              <span *ngIf="list.status === -3">已删除</span>
+            </td>
+            <td nz-td class="btn-lists">
+              <div class="flex-center">
+                <button class="btn btn-success" (click)="noProd(list._id)">解除禁封</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</ba-card>
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'解除封禁'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <p style="color: #bf1b08">确认对当前用户解除封禁！</p>
+  </ng-template>
+</nz-modal>

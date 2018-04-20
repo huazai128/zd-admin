@@ -16,7 +16,6 @@ export class ListsComponent implements OnInit {
   public keywords: string;
   public isDisabled: boolean = true;
   public state: any;
-  public selectIds: Array<string> = []; // 存储选中的ids
   private searchTerms = new Subject<string>(); // 搜索
   public tagOptions: Array<any> = [];
   public isLoading: boolean = true;

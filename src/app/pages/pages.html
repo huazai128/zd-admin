@@ -22,7 +22,7 @@
               <a routerLink="/forum/lists">论坛管理</a>
             </li>
             <li nz-menu-item>
-              <a routerLink="/tag">工具标签管理</a>
+              <a routerLink="/tag">类型标签管理</a>
             </li>
           </ul>
         </li>
@@ -53,7 +53,7 @@
               <a routerLink="/project/plan">解决方案</a>
             </li>
             <li nz-menu-item>
-              <a routerLink="/project/lists">众测平台</a>
+              <a routerLink="/project/platform">众测平台</a>
             </li>
           </ul>
         </li>
@@ -63,9 +63,15 @@
             <span>用户管理</span>
           </span>
           <ul>
-            <li nz-menu-item>客户申请</li>
-            <li nz-menu-item>测试开发申请</li>
-            <li nz-menu-item>封禁用户</li>
+            <li nz-menu-item>
+              <a routerLink="/user/ordinary">普通用户</a>
+            </li>
+            <li nz-menu-item>
+              <a routerLink="/user/test">测试开发者</a>
+            </li>
+            <li nz-menu-item>
+              <a routerLink="/user/prohibit">封禁用户</a>
+            </li>
           </ul>
         </li>
         <li nz-submenu>
@@ -74,7 +80,9 @@
             <span>系统设置</span>
           </span>
           <ul>
-            <li nz-menu-item>账号设置</li>
+            <li nz-menu-item>
+              <a routerLink="/user/auth">账号设置</a>
+            </li>
           </ul>
         </li>
       </ul>

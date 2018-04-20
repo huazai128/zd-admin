@@ -1,0 +1,132 @@
+<ba-card title="账号设置" selectType="add" baCardClass="with-scroll">
+  <div class="add">
+    <a href="javascript:void(0)" (click)="showModal()">新增</a>
+  </div>
+  <div class="article-list">
+    <div class="tools flex">
+      <div class="pull-right">
+        <div class="input-group flex">
+          <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="table-lists">
+      <nz-table #nzTable [nzTotal]="listsData.pagination.total" [nzLoading]="isLoading" [nzAjaxData]="listsData.data" [nzPageSize]="listsData.pagination.pre_page"
+        [nzPageIndex]="listsData.pagination.current_page" (nzPageIndexChangeClick)="asd($event)">
+        <thead nz-thead>
+          <tr>
+            <th nz-th>
+              <span>用户名</span>
+            </th>
+            <th nz-th>
+              <span>邮箱</span>
+            </th>
+            <th nz-th>
+              <span>密码</span>
+            </th>
+            <th nz-th [nzWidth]="'35%'">
+              <span>权限</span>
+            </th>
+            <th nz-th>
+              <span>操作</span>
+            </th>
+            <th nz-th [nzWidth]="'8%'">
+              <span>启用</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let list of listsData.data">
+            <td nz-td>
+              <div class="new-text">{{ list.username}}</div>
+            </td>
+            <td nz-td>
+              <div class="new-text">{{ list.email }}</div>
+            </td>
+            <td nz-td>
+              <div class="btn-lists">
+                <button class="btn btn-danger" (click)="resetPws(list._id,reset,1,'重置密码')">重置密码</button>
+              </div>
+            </td>
+            <td nz-td class="user-power">
+              <div class="flex-center">
+                <p *ngFor="let p of list.power">
+                  <span *ngIf="p === 0"> 内容管理</span>
+                  <span *ngIf="p === 1"> 社区管理</span>
+                  <span *ngIf="p === 2"> 项目管理</span>
+                  <span *ngIf="p === 3"> 用户管理</span>
+                  <span *ngIf="p === 4"> 系统管理</span>
+                </p>
+              </div>
+            </td>
+            <td nz-td class="btn-lists">
+              <div class="flex-center" *ngIf="list.status !== 0">
+                <button class="btn btn-success" (click)="showModal(list)">修改用户</button>
+              </div>
+              <div class="flex-center" *ngIf="list.status !== 0">
+                <button class="btn btn-danger" (click)="resetPws(list._id,remove,2,'删除操作')">删除</button>
+              </div>
+              <div class="flex-center" *ngIf="list.status === 0">暂无操作</div>
+            </td>
+            <td nz-td nzCheckbox>
+              <div class="flex-center" *ngIf="list.status === 0">暂无操作</div>
+              <label *ngIf="list.status !== 0" nz-checkbox [(ngModel)]="list.enable" (ngModelChange)="refreshStatus(list._id,list.enable)"></label>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</ba-card>
+
+<ng-template #reset>
+  <p style="color: #bf1b08">确定要重置当前用户密码？</p>
+</ng-template>
+<ng-template #remove>
+  <p style="color: #bf1b08">确定要删除当前用户！</p>
+</ng-template>
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="_id ? '修改账号' : '新增账号'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)"
+  (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <div class="form">
+      <form nz-form [formGroup]="validateForm">
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="username" nz-form-item-required>用户名</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" formControlName="username" [nzId]="'username'" [nzPlaceHolder]="'请输入用户名'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="email" nz-form-item-required>账号</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入邮箱'" formControlName="email" [nzId]="'email'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="password" nz-form-item-required>密码</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="10" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzType]="'password'" [nzPlaceHolder]="'请输入密码'" formControlName="password" [nzId]="'password'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="password" nz-form-item-required>管理权限</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="18" [nzXs]="24" nzHasFeedback>
+            <nz-checkbox-group [(ngModel)]="checkLists" (ngModelChange)="getCheck(checkLists)" [ngModelOptions]="{standalone: true}"></nz-checkbox-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</nz-modal>

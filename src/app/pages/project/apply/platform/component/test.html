@@ -1,0 +1,63 @@
+<nz-modal [nzVisible]="isVisible" nzStyle="{width: 650px}" [nzTitle]="'派单'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)"
+  (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <div class="modal-box">
+      <div class="input-group flex">
+        <input type="text" class="form-control with-default-addon" #keyword placeholder="输入邮箱、用户名搜索" (keyup)="getKeyword(keyword.value)">
+      </div>
+      <nz-table #nzTable [nzLoading]="isLoading" [nzAjaxData]="userData.data" [nzTotal]="userData.pagination.total" [nzPageSize]="userData.pagination.pre_page"
+        [nzPageIndex]="userData.pagination.current_page" (nzPageIndexChangeClick)="asd($event)">
+        <thead nz-thead>
+          <tr>
+            <th nz-th>
+              <span>用户名</span>
+            </th>
+            <th nz-th>
+              <span>邮箱</span>
+            </th>
+            <th nz-th [nzWidth]="'15%'">
+              <span>真实姓名</span>
+            </th>
+            <th nz-th>
+              <span>公司名称</span>
+            </th>
+            <th nz-th>
+              <span>职位</span>
+            </th>
+            <th nz-th>
+              <span>测试资历</span>
+            </th>
+            <th nz-th>
+              <span>联系电话</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let list of userData.data" [class.select]="list.checked" (click)="getUserId(list._id)" >
+            <td nz-td>
+              <span>{{ list.username }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.email }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.name }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.company }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.job }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.record }}</span>
+            </td>
+            <td nz-td>
+              <span>{{ list.iphone }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </ng-template>
+</nz-modal>
