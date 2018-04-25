@@ -97,6 +97,9 @@
               <span>申请时间</span>
             </th>
             <th nz-th>
+              <span>派单用户</span>
+            </th>
+            <th nz-th>
               <span>派单状态</span>
             </th>
             <th nz-th>
@@ -146,6 +149,9 @@
               <span *ngIf="list.state === -2">回收站</span>
             </td>
             <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
+            <td nz-td>
+              <span>{{ list.p_user!.username || '派单' }}</span>
+            </td>
             <td nz-td class="btn-lists">
               <p style="text-align:center;margin-bottom: 10px;">
                 <span *ngIf="list.p_state === 0">派单中</span>
@@ -226,26 +232,26 @@
           </tr>
           <tr nz-tbody-tr *ngFor="let list of fileDatas;let idx = index">
             <td nz-td>
-              {{list.process}}
               <span *ngIf="idx === 0">确认需求</span>
               <span *ngIf="idx === 1">技术测试 </span>
               <span *ngIf="idx === 2">结果交付</span>
             </td>
             <td nz-td>
-              <span>{{ list.url || '无' }}</span>
+              <span *ngIf="!list.url">无</span>
+              <a *ngIf="list.url" [href]="urlRoot + list.p_url">{{ list.url}}</a>
             </td>
             <td nz-td class="btn-lists">
               <div>
                 <nz-upload nzAction="{{ imgUplaod + '?process=' + list.process + '&id=' + list._id }}" [nzHeaders]='headers' [nzData]="file"
                   nzName="bg" [nzShowUploadList]="false" (nzChange)="handleChange($event)">
-                  <button nz-button class="btn btn-success" [disabled]="!list.open">
+                  <button nz-button class="btn btn-success" style="width:90px" [disabled]="!list.open">
                     <i class="anticon anticon-upload"></i>
                     <span>上传文件</span>
                   </button>
                 </nz-upload>
               </div>
               <div>
-                <button nz-button class="btn btn-danger" [disabled]="!list.open">删除</button>
+                <button nz-button style="width:90px" class="btn btn-danger" (click)="removeFile(list._id,list.state)" [disabled]="!list.open">删除</button>
               </div>
             </td>
             <td nz-td nzCheckbox>
@@ -259,4 +265,3 @@
   </ng-template>
 </nz-modal>
 <plat-user [isVisible]="userShow" [id]="id" (onHideModal)="onHide()" (onOk)="selectUserId($event)"></plat-user>
-

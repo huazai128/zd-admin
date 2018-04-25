@@ -1,12 +1,9 @@
-<ba-card title="测试开发则">
+<ba-card title="测试开发则" selectType="add" baCardClass="with-scroll">
+  <div class="add">
+    <a href="javascript:void(0)" (click)="addUserModal()">新增</a>
+  </div>
   <div class="article-list">
     <div class="tools flex">
-      <!-- <div class="btn-group flex-center">
-        <nz-select style="width: 120px;" [nzPlaceHolder]="'批量操作'" [(ngModel)]="state" (ngModelChange)="moveState($event)" [nzDisabled]="isDisabled">
-          <nz-option *ngFor="let option of stateOptions" [nzLabel]="option.label" [nzValue]="option.value">
-          </nz-option>
-        </nz-select>
-      </div> -->
       <div class="pull-right">
         <div class="input-group flex">
           <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
@@ -18,13 +15,9 @@
     </div>
     <div class="table-lists">
       <nz-table #nzTable [nzTotal]="listsData.pagination.total" [nzLoading]="isLoading" [nzAjaxData]="listsData.data" [nzPageSize]="listsData.pagination.pre_page"
-        [nzPageIndex]="listsData.pagination.current_page"
-        (nzPageIndexChangeClick)="asd($event)" >
+        [nzPageIndex]="listsData.pagination.current_page" (nzPageIndexChangeClick)="asd($event)">
         <thead nz-thead>
           <tr>
-            <!-- <th nz-th nzCheckbox>
-              <label nz-checkbox [(ngModel)]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"> ID </label>
-            </th> -->
             <th nz-th>
               <span>用户名</span>
             </th>
@@ -56,7 +49,10 @@
               <span>注册时间</span>
             </th>
             <th nz-th>
-              <span>状态</span>
+              <span>禁言状态</span>
+            </th>
+            <th nz-th>
+              <span>审核状态</span>
             </th>
             <th nz-th class="flex-center">
               <span>操作</span>
@@ -65,9 +61,6 @@
         </thead>
         <tbody nz-tbody>
           <tr nz-tbody-tr *ngFor="let list of listsData.data">
-            <!-- <td nz-td nzCheckbox>
-              <label nz-checkbox [(ngModel)]="list.checked" (ngModelChange)="refreshStatus()"> {{list.id }}</label>
-            </td> -->
             <td nz-td>
               <div class="new-text">{{ list.username }}</div>
             </td>
@@ -99,18 +92,31 @@
             </td>
             <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
             <td nz-td>
-              <span *ngIf="list.status === 1">正常</span>
-              <span *ngIf="list.status === 0">禁言一小时</span>
-              <span *ngIf="list.status === -1">禁言{{ list.time_name }}</span>
-              <span *ngIf="list.status === -2">禁用</span>
-              <span *ngIf="list.status === -3">已删除</span>
+              <p *ngIf="list.c_state === 1">
+                <span *ngIf="list.status === 1">正常</span>
+                <span *ngIf="list.status === 0">禁言一小时</span>
+                <span *ngIf="list.status === -1">禁言{{ list.time_name }}</span>
+                <span *ngIf="list.status === -2">禁用</span>
+                <span *ngIf="list.status === -3">已删除</span>
+              </p>
+              <p *ngIf="list.c_state === 0" style="text-align:center">/</p>
+            </td>
+            <td nz-td>
+              <span *ngIf="list.c_state === 1">已审核</span>
+              <span *ngIf="list.c_state === 0">待审核</span>
             </td>
             <td nz-td class="btn-lists">
-              <div class="flex-center" *ngIf="list.status !== -3">
+              <div class="flex-center" *ngIf="list.c_state === 1 && list.status !== -3">
                 <button class="btn btn-success" (click)="resetPws(list._id,pro,2,'禁封操作',list.status)">禁封</button>
               </div>
               <div class="flex-center" *ngIf="list.status !== -3">
                 <button class="btn btn-danger" (click)="resetPws(list._id,remove,3,'删除操作')">删除</button>
+              </div>
+              <div class="flex-center" *ngIf="list.c_state === 1">
+                <button class="btn btn-info" (click)="changeState(list._id,0)">取消审核</button>
+              </div>
+              <div class="flex-center" *ngIf="list.c_state === 0">
+                <button class="btn btn-info" (click)="changeState(list._id,1)">通过审核</button>
               </div>
               <div class="flex-center" *ngIf="list.status === -3">暂无操作</div>
             </td>
@@ -164,3 +170,93 @@
 <ng-template #remove>
   <p style="color: #bf1b08">确定要删除当前用户！</p>
 </ng-template>
+
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'新增测试用户'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <div class="form">
+      <form nz-form [formGroup]="validateForm">
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="username" nz-form-item-required>用户名</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" formControlName="username" [nzId]="'username'" [nzPlaceHolder]="'请输入用户名'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="email" nz-form-item-required>邮箱</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入邮箱'" formControlName="email" [nzId]="'email'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="password" nz-form-item-required>密码</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzType]="'password'" [nzPlaceHolder]="'请输入密码'" formControlName="password" [nzId]="'password'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="confirm" nz-form-item-required>确认密码</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzType]="'password'" [nzPlaceHolder]="'请再次确认密码'" formControlName="confirm" [nzId]="'confirm'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="name" nz-form-item-required>真实姓名</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入姓名'" formControlName="name" [nzId]="'name'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="card" nz-form-item-required>身份证号</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入身份证号'" formControlName="card" [nzId]="'card'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="company" nz-form-item-required>公司名称</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入公司名称'" formControlName="company" [nzId]="'company'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="job" nz-form-item-required>职位</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入职位'" formControlName="job" [nzId]="'job'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="record" nz-form-item-required>测试资历</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入测试资历'" formControlName="record" [nzId]="'record'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row [nzGutter]="24">
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="iphone" nz-form-item-required>联系电话</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" nzHasFeedback>
+            <nz-input [nzSize]="'large'" [nzPlaceHolder]="'请输入联系电话'" formControlName="iphone" [nzId]="'iphone'"></nz-input>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</nz-modal>

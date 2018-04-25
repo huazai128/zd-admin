@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { Subject } from 'rxjs/Subject';
 import { UserService } from '../user.service';
@@ -20,6 +21,8 @@ export class TestComponent {
   public radioValue: number = 0;
   public demoValue = 3;
   public selectedOption = 1;
+  public isVisible: boolean = false;
+  public validateForm: FormGroup;
   public options: any = [
     { value: 0, label: "分钟" },
     { value: 1, label: "小时" },
@@ -34,7 +37,31 @@ export class TestComponent {
       total_page: 0
     }
   };
-  constructor(private httpSer: UserService, private modalSer: NzModalService, private msg: NzMessageService) { }
+  constructor(private httpSer: UserService,
+    private modalSer: NzModalService,
+    private fb: FormBuilder,
+    private msg: NzMessageService) {
+    this.validateForm = this.fb.group({
+      username: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.pattern(/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(26)]],
+      confirm: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(26), this.confirmationValidator]],
+      name: ['', [Validators.required]],
+      card: ['', [Validators.required, Validators.pattern(/^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/)]],
+      company: ['', [Validators.required]],
+      job: ['', [Validators.required]],
+      record: ['', [Validators.required]],
+      iphone: ['', [Validators.required, Validators.pattern(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)]],
+    });
+  }
+
+  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.validateForm.controls['password'].value) {
+      return { confirm: true, error: true };
+    }
+  };
 
   ngOnInit() {
     this.getUsers();
@@ -71,7 +98,6 @@ export class TestComponent {
   }
 
 
-  // 
   public resetPws(_id: string, reset: any, num: number, title: string, status?: number): void {
     let arr = [1, 0, -1, -2];
     if (arr.includes(status)) {
@@ -113,15 +139,15 @@ export class TestComponent {
           }
           this.putAuthId(query);
         }
-        if(num === 3){
-          this.putAuthId({ _id:_id,status: -3 });
+        if (num === 3) {
+          this.putAuthId({ _id: _id, status: -3 });
         }
       }
     })
   }
 
   private putAuthId(params: any = {}): void {
-    this.httpSer.putApplyId(params).subscribe(({ code }) => {
+    this.httpSer.putUserId(params).subscribe(({ code }) => {
       this.getUsers();
     });
   }
@@ -129,6 +155,33 @@ export class TestComponent {
   // 分页按钮
   public asd(page: number): void {
     this.getUsers({ page: page });
+  }
+
+  // 改变审核状态
+  public changeState(id: string, c_state: number): void {
+    this.putAuthId({ _id: id, c_state: c_state });
+  }
+
+  public addUserModal(): void {
+    this.isVisible = true;
+  }
+
+  public handleOk(): void {
+    if (this.validateForm.valid) {
+      this.httpSer.addUser({ ...this.validateForm.value, type: 1 }).subscribe(({ code, message }) => {
+        if (code) {
+          this.getUsers();
+          this.handleCancel();
+        } else {
+          this.msg.info(message);
+        }
+      })
+    }
+  }
+
+  public handleCancel(): void {
+    this.isVisible = false;
+    this.validateForm.reset();
   }
 
 }

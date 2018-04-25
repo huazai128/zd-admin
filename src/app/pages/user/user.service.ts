@@ -12,14 +12,15 @@ export class UserService {
     return this.httpSer.get(`auth/${id}`);
   }
 
+
   // 获取数据集合
   public getLists(data: any = {}): Observable<any> {
     return this.httpSer.get("auth", data);
   }
 
   // 新增
-  public addApply(data: any = {}): Observable<any> {
-    return this.httpSer.post("auth", data);
+  public addUser(data: any = {}): Observable<any> {
+    return this.httpSer.post("user", data);
   }
 
   // 批量操作
@@ -28,7 +29,7 @@ export class UserService {
   }
 
   // 修改单个文件
-  public putApplyId(data: any = {}): Observable<any> {
+  public putUserId(data: any = {}): Observable<any> {
     return this.httpSer.put(`auth/${data._id}`, data);
   }
 }

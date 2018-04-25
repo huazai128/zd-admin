@@ -86,7 +86,7 @@ export class ProhibitComponent {
   }
 
   private putAuthId(params: any = {}): void {
-    this.httpSer.putApplyId(params).subscribe(({ code }) => {
+    this.httpSer.putUserId(params).subscribe(({ code }) => {
       this.isVisible = false;
       if(code){
         this.getUsers();

@@ -28,6 +28,7 @@ export class PlatformListsComponent {
   public time: Array<any> = [];
   public userShow: boolean = false;
   public id: string;
+  public urlRoot:string = API_ROOT;
   public file: any = {
     apply_id: '',
     state: 0,
@@ -61,9 +62,9 @@ export class PlatformListsComponent {
     }
   }
   public fileDatas: any = [
-    { url: '', state: false, _id: "", process: 1, open: true },
-    { url: '', state: false, _id: "", process: 2 },
-    { url: '', state: false, _id: "", process: 3 },
+    { url: '', state: false, _id: "", process: 1, p_url: '', open: true },
+    { url: '', state: false, _id: "", process: 2, p_url: '' },
+    { url: '', state: false, _id: "", process: 3, p_url: '' },
   ]
   constructor(private httpSer: ApplyService,
     private msg: NzMessageService,
@@ -207,9 +208,9 @@ export class PlatformListsComponent {
   // 重新初始化数据
   private getInitData(): void {
     this.fileDatas = [
-      { url: '', state: false, _id: "", process: 1, open: true },
-      { url: '', state: false, _id: "", process: 2 },
-      { url: '', state: false, _id: "", process: 3 },
+      { url: '', state: false, _id: "", process: 1, p_url: '', open: true },
+      { url: '', state: false, _id: "", process: 2, p_url: '' },
+      { url: '', state: false, _id: "", process: 3, p_url: '' },
     ]
   }
   // 监听文件改变
@@ -264,6 +265,13 @@ export class PlatformListsComponent {
     this.httpSer.putApplyId(params).subscribe((res) => {
       this.userShow = false;
       this.getLists();
+    })
+  }
+
+  // 删除 
+  public removeFile(id:string,state:any): void {
+    this.httpSer.putFileId({id:id,state:-1,remove:true}).subscribe((res) => {
+      this.getFiles();
     })
   }
 
