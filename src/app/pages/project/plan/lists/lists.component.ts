@@ -26,8 +26,6 @@ export class PlanListsComponent {
   }
   public stateOptions = [
     { value: 1, label: '快速通过' },
-    { value: 0, label: '待审核' },
-    { value: -1, label: '不通过' },
     { value: -2, label: '回收站' },
   ]
   public listsData = {
@@ -69,7 +67,7 @@ export class PlanListsComponent {
       this.listsData.pagination.current_page = 1;
     }
     this.httpSer.getLists(params).subscribe(({ code, result }) => {
-      if (code) this.listsData = result;
+      if (code) { this.listsData = result };
     })
   }
 

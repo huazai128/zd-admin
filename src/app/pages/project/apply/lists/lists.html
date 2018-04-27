@@ -22,14 +22,14 @@
           <span>已通过</span>
           <span *ngIf="getParams.state == 1">({{ listsData.pagination.total || 0 }})</span>
         </button>
-        <button nz-button [ngClass]="{ 'active': getParams.state == 0 }" (click)="switchState(0)">
+        <!-- <button nz-button [ngClass]="{ 'active': getParams.state == 0 }" (click)="switchState(0)">
           <span>待审核</span>
           <span *ngIf="getParams.state == 0">({{ listsData.pagination.total || 0 }})</span>
-        </button>
-        <button nz-button [ngClass]="{ 'active': getParams.state == -1 }" (click)="switchState(-1)">
+        </button> -->
+        <!-- <button nz-button [ngClass]="{ 'active': getParams.state == -1 }" (click)="switchState(-1)">
           <span>不通过</span>
           <span *ngIf="getParams.state == -1">({{ listsData.pagination.total || 0 }})</span>
-        </button>
+        </button> -->
         <button nz-button [ngClass]="{ 'active': getParams.state == -2 }" (click)="switchState(-2)">
           <i class="anticon anticon-wallet"></i>
           <span>回收站</span>
@@ -49,7 +49,7 @@
         <div class="input-group flex">
           <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
           <span class="input-group-btn">
-            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+            <button type="submit" class="btn btn-default">搜索</button>
           </span>
         </div>
       </div>
@@ -87,14 +87,14 @@
             <th nz-th>
               <span>QQ</span>
             </th>
-            <th nz-th>
+            <!-- <th nz-th>
               <span>申请状态</span>
-            </th>
+            </th> -->
             <th nz-th>
               <span>申请时间</span>
             </th>
             <th nz-th>
-              <span>测试状态</span>
+              <span>状态</span>
             </th>
             <th nz-th>
               <p class="flex-center">
@@ -116,7 +116,7 @@
               <div class="new-text" [innerHTML]="list.content | stringStr:70"></div>
             </td>
             <td nz-td>
-              <div class="new-text">{{ list.company }}</div>
+              <div class="new-text">{{ list.company | stringStr:20 }}</div>
             </td>
             <td nz-td>
               <div class="new-text">{{ list.name }}</div>
@@ -133,12 +133,12 @@
             <td nz-td>
               <span>{{ list.qq }}</span>
             </td>
-            <td nz-td>
+            <!-- <td nz-td>
               <span *ngIf="list.state === 1">已通过</span>
               <span *ngIf="list.state === 0">待审核</span>
               <span *ngIf="list.state === -1">不通过</span>
               <span *ngIf="list.state === -2">回收站</span>
-            </td>
+            </td> -->
             <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
             <td nz-td class="btn-lists">
               <p style="text-align:center;margin-bottom: 10px;">
@@ -152,20 +152,17 @@
               </div>
             </td>
             <td nz-td class="btn-lists">
-              <div class="flex-center" *ngIf="list.state == 0">
-                <button class="btn btn-success" (click)="singleState([list._id],1)">通过审核</button>
-              </div>
-              <div class="flex-center" *ngIf="list.state == 1">
+              <!-- <div class="flex-center" *ngIf="list.state == 1">
                 <button class="btn btn-info" (click)="singleState([list._id],0)">待审核</button>
-              </div>
-              <div class="flex-center" *ngIf="list.state == -1">
-                <button class="btn btn-success" (click)="singleState([list._id],1)">通过审核</button>
-              </div>
+              </div> -->
+              <!-- <div class="flex-center" *ngIf="list.state !== 1">
+                <button class="btn btn-success" (click)="singleState([list._id],1)">快速发布</button>
+              </div> -->
               <div class="flex-center">
                 <a class="btn btn-info" [routerLink]="[ '/project/detail/', list._id]">查看详情</a>
               </div>
-              <div class="flex-center" *ngIf="list.state != -1">
-                <button class="btn btn-danger" (click)="singleState([list._id],-1)">移至回收站</button>
+              <div class="flex-center" *ngIf="list.state != -2">
+                <button class="btn btn-danger" (click)="singleState([list._id],-2)">移至回收站</button>
               </div>
             </td>
           </tr>
@@ -211,18 +208,18 @@
           </tr>
           <tr nz-tbody-tr *ngFor="let list of fileDatas;let idx = index">
             <td nz-td>
-              {{list.process}}
               <span *ngIf="idx === 0">确认需求</span>
               <span *ngIf="idx === 1">技术测试 </span>
               <span *ngIf="idx === 2">结果交付</span>
             </td>
             <td nz-td>
-              <span>{{ list.url || '无' }}</span>
+              <span *ngIf="!list.url">无</span>
+              <a *ngIf="list.url" [href]="urlRoot + list.p_url" [download]="list.url">{{ list.url}}</a>
             </td>
             <td nz-td class="btn-lists">
               <div>
-                <nz-upload nzAction="{{ imgUplaod + '?process=' + list.process + '&id=' + list._id }}" [nzHeaders]='headers' [nzData]="file"
-                  nzName="bg" [nzShowUploadList]="false" (nzChange)="handleChange($event)">
+                <nz-upload nzAction="{{ imgUplaod + '?process=' + (idx+1) + '&id=' + list._id }}" [nzHeaders]='headers' [nzData]="file" nzName="bg"
+                  [nzShowUploadList]="false" (nzChange)="handleChange($event)">
                   <button nz-button class="btn btn-success" [disabled]="!list.open">
                     <i class="anticon anticon-upload"></i>
                     <span>上传文件</span>
@@ -230,7 +227,7 @@
                 </nz-upload>
               </div>
               <div>
-                <button nz-button class="btn btn-danger" [disabled]="!list.open">删除</button>
+                <button nz-button class="btn btn-danger" (click)="removeFile(list._id,list.state)" [disabled]="!list.open">删除</button>
               </div>
             </td>
             <td nz-td nzCheckbox>

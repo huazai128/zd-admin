@@ -45,9 +45,9 @@ export class AuthComponent {
     private modalSer: NzModalService,
     private msg: NzMessageService) {
     this.validateForm = this.fb.group({
-      username: ["", [Validators.required]],
+      username: [null, [Validators.required]],
       email: ["", [Validators.required]],
-      password: ["", [Validators.required]],
+      password: [null, [Validators.required]],
     });
   }
 
@@ -118,6 +118,8 @@ export class AuthComponent {
   public handleCancel(): void {
     this.isVisible = false;
     this.checked = [];
+    this._id = '';
+    this.user = {};
     this.checkLists.forEach((item) => (item.checked = false));
     this.isVisible = false;
     this.validateForm.reset(); // 重置表单

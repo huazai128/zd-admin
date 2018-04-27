@@ -3,6 +3,10 @@ import { PagesComponent } from "./pages.component";
 
 const routes: Routes = [
   {
+    path: "login",
+    loadChildren: "app/pages/login/login.module#LoginModule"
+  },
+  {
     path: '',
     component: PagesComponent,
     children: [
@@ -16,10 +20,6 @@ const routes: Routes = [
       { path: "user", loadChildren: "app/pages/user/user.module#UserModule" },
     ]
   },
-  {
-    path: "login",
-    loadChildren: "app/pages/login/login.module#LoginModule"
-  }
 ]
 
 export const routing = RouterModule.forRoot(routes, { useHash: true });

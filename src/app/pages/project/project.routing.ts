@@ -8,13 +8,13 @@ import { PlatformListsComponent } from './apply/platform/lists.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'apply', pathMatch: 'full' },
-  { path: 'apply', component: ApplyListsComponent,},
+  { path: 'apply', component: ApplyListsComponent, },
   { path: 'detail/:_id', component: ApllyDetailComponent, },
   { path: 'plan', component: PlanListsComponent, },
-  { path: 'p_detail', component: PDetailComponent,  },
+  { path: 'pl_details/:_id', component: PlanDetailComponent, },
+  { path: 'platform', component: PlatformListsComponent, },
   { path: 'p_detail/:_id', component: PDetailComponent, },
-  { path: 'platform', component: PlatformListsComponent,  },
-  
+  { path: 'p_detail', component: PDetailComponent, },
 ]
 
 export const routing = RouterModule.forChild(routes);

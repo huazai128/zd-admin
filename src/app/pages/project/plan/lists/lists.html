@@ -15,14 +15,6 @@
           <span>已通过</span>
           <span *ngIf="getParams.state == 1">({{ listsData.pagination.total || 0 }})</span>
         </button>
-        <button nz-button [ngClass]="{ 'active': getParams.state == 0 }" (click)="switchState(0)">
-          <span>待审核</span>
-          <span *ngIf="getParams.state == 0">({{ listsData.pagination.total || 0 }})</span>
-        </button>
-        <button nz-button [ngClass]="{ 'active': getParams.state == -1 }" (click)="switchState(-1)">
-          <span>不通过</span>
-          <span *ngIf="getParams.state == -1">({{ listsData.pagination.total || 0 }})</span>
-        </button>
         <button nz-button [ngClass]="{ 'active': getParams.state == -2 }" (click)="switchState(-2)">
           <i class="anticon anticon-wallet"></i>
           <span>回收站</span>
@@ -42,7 +34,7 @@
         <div class="input-group flex">
           <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
           <span class="input-group-btn">
-            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+            <button type="submit" class="btn btn-default">搜索</button>
           </span>
         </div>
       </div>
@@ -59,14 +51,14 @@
             <th nz-th [nzWidth]="'15%'">
               <span>公司名称</span>
             </th>
-            <th nz-th>
+            <th nz-th [nzWidth]="'5%'">
               <span>公司规模</span>
             </th>
             <th nz-th>
               <span>申请人姓名</span>
             </th>
-            <th nz-th>
-              <span>行业</span>
+            <th nz-th [nzWidth]="'15%'">
+              <span >行业</span>
             </th>
             <th nz-th>
               <span>手机号</span>
@@ -99,10 +91,10 @@
               <div class="new-text">{{ list.scale }}</div>
             </td>
             <td nz-td>
-              <div class="new-text">{{ list.name }}</div>
+              <div class="new-text">{{ list.name | stringStr:10 }}</div>
             </td>
             <td nz-td>
-              <div class="new-text">{{ list.industry }}</div>
+              <div class="new-text">{{ list.industry | stringStr:20 }}</div>
             </td>
             <td nz-td>
               <span>{{ list.phone }}</span>
@@ -111,24 +103,16 @@
               <span>{{ list.email }}</span>
             </td>
             <td nz-td>
-              <span *ngIf="list.state === 1">已通过</span>
-              <span *ngIf="list.state === 0">待审核</span>
-              <span *ngIf="list.state === -1">不通过</span>
+              <span *ngIf="list.state === 1">正常</span>
               <span *ngIf="list.state === -2">回收站</span>
             </td>
             <td nz-td>{{ list.create_at | date:"yyyy-MM-dd HH:mm:ss" }}</td>
             <td nz-td class="btn-lists">
-              <div class="flex-center" *ngIf="list.state == 0">
+              <!-- <div class="flex-center" *ngIf="list.state !== 1">
                 <button class="btn btn-success" (click)="singleState([list._id],1)">通过审核</button>
-              </div>
-              <div class="flex-center" *ngIf="list.state == 1">
-                <button class="btn btn-info" (click)="singleState([list._id],0)">待审核</button>
-              </div>
-              <div class="flex-center" *ngIf="list.state == -1">
-                <button class="btn btn-success" (click)="singleState([list._id],1)">通过审核</button>
-              </div>
+              </div> -->
               <div class="flex-center">
-                <a class="btn btn-info" [routerLink]="['/project/p_detail/', list._id]">查看详情</a>
+                <a class="btn btn-info" [routerLink]="['/project/pl_details/', list._id]">查看详情</a>
               </div>
               <div class="flex-center" *ngIf="list.state != -1">
                 <button class="btn btn-danger" (click)="singleState([list._id],-1)">移至回收站</button>

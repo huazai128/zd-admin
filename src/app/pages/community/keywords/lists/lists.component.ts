@@ -32,7 +32,7 @@ export class KyListsComponent {
   @Output() moveStateChange = new EventEmitter(); // 分页事件
   @Output() kySearch = new EventEmitter(); // 分页事件
 
-  constructor() {}
+  constructor() { }
 
   // 初始化
   ngOnInit() {
@@ -64,8 +64,8 @@ export class KyListsComponent {
   }
 
   // 状态操作
-  public stateChange(ids:Array<string>,active: number): void {
-    this.stateKy.emit({ids:ids,active:active  });
+  public stateChange(ids: Array<string>, active: number): void {
+    this.stateKy.emit({ ids: ids, active: active });
   }
 
   // 分页
@@ -75,7 +75,7 @@ export class KyListsComponent {
 
   // 修改状态
   public moveState(value): void {
-    this.moveStateChange.emit({ids:this.ids,active:value});
+    this.moveStateChange.emit({ ids: this.ids, active: value });
     this.ids = [];
     this.indeterminate = false;
     this.allChecked = false;
@@ -104,9 +104,9 @@ export class KyListsComponent {
       item.checked && this.ids.push(item._id);
     })
     if (!!this.ids.length) {
-      this.isDisabled = false;
-    } else {
       this.isDisabled = true;
+    } else {
+      this.isDisabled = false;
     }
     this.kys.length && (this.allChecked = allChecked);
     this.indeterminate = (!allChecked) && (!allUnChecked);

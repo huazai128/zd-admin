@@ -8,7 +8,7 @@
         <div class="input-group flex">
           <input type="text" class="form-control with-default-addon" #keyword placeholder="文章标题、描述" (keyup)="getKeyword(keyword.value)">
           <span class="input-group-btn">
-            <button type="submit" class="btn btn-default" (click)="searchSubmit()">搜索</button>
+            <button type="submit" class="btn btn-default">搜索</button>
           </span>
         </div>
       </div>
@@ -54,15 +54,17 @@
             <th nz-th>
               <span>审核状态</span>
             </th>
-            <th nz-th class="flex-center">
-              <span>操作</span>
+            <th nz-th>
+              <div class="flex-center">
+                <span>操作</span>
+              </div>
             </th>
           </tr>
         </thead>
         <tbody nz-tbody>
           <tr nz-tbody-tr *ngFor="let list of listsData.data">
             <td nz-td>
-              <div class="new-text">{{ list.username }}</div>
+              <div class="new-text">{{ list.username | stringStr:10 }}</div>
             </td>
             <td nz-td>
               <div class="new-text">{{ list.email }}</div>
@@ -73,19 +75,19 @@
               </div>
             </td>
             <td nz-td>
-              <div class="new-text">{{ list.name }}</div>
+              <div class="new-text">{{ list.name| stringStr:20 }}</div>
             </td>
             <td nz-td>
               <span>{{ list.card }}</span>
             </td>
             <td nz-td>
-              <span>{{ list.company }}</span>
+              <span>{{ list.company | stringStr:20 }}</span>
             </td>
             <td nz-td>
-              <span>{{ list.job }}</span>
+              <span>{{ list.job | stringStr:10 }}</span>
             </td>
             <td nz-td>
-              <span>{{ list.record }}</span>
+              <span>{{ list.record | stringStr:10 }}</span>
             </td>
             <td nz-td>
               <span>{{ list.iphone }}</span>
@@ -107,7 +109,7 @@
             </td>
             <td nz-td class="btn-lists">
               <div class="flex-center" *ngIf="list.c_state === 1 && list.status !== -3">
-                <button class="btn btn-success" (click)="resetPws(list._id,pro,2,'禁封操作',list.status)">禁封</button>
+                <button class="btn btn-success" (click)="resetPws(list._id,pro,2,'禁封操作',list.status)">禁封/禁言</button>
               </div>
               <div class="flex-center" *ngIf="list.status !== -3">
                 <button class="btn btn-danger" (click)="resetPws(list._id,remove,3,'删除操作')">删除</button>
@@ -118,7 +120,6 @@
               <div class="flex-center" *ngIf="list.c_state === 0">
                 <button class="btn btn-info" (click)="changeState(list._id,1)">通过审核</button>
               </div>
-              <div class="flex-center" *ngIf="list.status === -3">暂无操作</div>
             </td>
           </tr>
         </tbody>

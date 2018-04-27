@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd,RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd, RouterStateSnapshot } from '@angular/router';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { Subject } from 'rxjs/Subject';
 import { distinctUntilChanged, debounceTime, filter, map, mergeMap } from 'rxjs/operators';
@@ -26,30 +26,29 @@ export class ApplyListsComponent {
   public state: string = "all";
   private searchTerms = new Subject<string>(); // 搜索
   public time: Array<any> = [];
-  public style:number = 0;
+  public style: number = 0;
+  public urlRoot: string = API_ROOT;
   public file: any = {
     apply_id: '',
     state: 0,
-  }
+  };
   public headers = {
     "Authorization": 'Bearer ' + localStorage.getItem('id_token')
-  }
+  };
   public imgUplaod = `${API_ROOT}/image`; // 图片上传接口
   public getParams = {
     mold: 'all',
     state: 'all'
-  }
+  };
   public moldOptions = [
     { value: 'all', label: "全部申请" },
     { value: 0, label: "功能测试" },
     { value: 1, label: "兼容测试" },
-  ]
+  ];
   public stateOptions = [
     { value: 1, label: '快速通过' },
-    { value: 0, label: '待审核' },
-    { value: -1, label: '不通过' },
     { value: -2, label: '回收站' },
-  ]
+  ];
   public listsData = {
     data: [],
     pagination: {
@@ -58,20 +57,20 @@ export class ApplyListsComponent {
       pre_page: 10,
       total_page: 0,
     }
-  }
+  };
   public fileDatas: any = [
     { url: '', state: false, _id: "", process: 1, open: true },
-    { url: '', state: false, _id: "", process: 2 },
-    { url: '', state: false, _id: "", process: 3 },
-  ]
+    { url: '', state: false, _id: "", process: 2, },
+    { url: '', state: false, _id: "", process: 3, },
+  ];
   constructor(private httpSer: ApplyService,
     private msg: NzMessageService,
     private router: Router,
     private route: ActivatedRoute) {
-      let { style } =this.route.snapshot.queryParams;
-      if(style){
-        this.style = style;
-      }
+    let { style } = this.route.snapshot.queryParams;
+    if (style) {
+      this.style = style;
+    }
   }
   // 初始化
   ngOnInit() {
@@ -82,7 +81,7 @@ export class ApplyListsComponent {
     ).subscribe((value) => {
       this.keywords = value;
       this.getLists();
-    })
+    });
   }
   // 获取数据
   public getLists(params: any = {}): void {
@@ -104,8 +103,8 @@ export class ApplyListsComponent {
     }
     params.style = this.style;
     this.httpSer.getLists(params).subscribe(({ code, result }) => {
-      if (code) this.listsData = result;
-    })
+      if (code) { this.listsData = result; }
+    });
   }
 
   // 选择时间
@@ -154,7 +153,7 @@ export class ApplyListsComponent {
     this.ids = [];
     this.listsData.data.forEach((item) => {
       item.checked && this.ids.push(item._id);
-    })
+    });
     if (!!this.ids.length) {
       this.isDisabled = false;
     } else {
@@ -192,27 +191,30 @@ export class ApplyListsComponent {
     this.getInitData();
     this.httpSer.getFiles({ apply_id: this.file.apply_id }).subscribe(({ code, result }) => {
       if (result.data.length) {
-        this.fileDatas = [...result.data.slice(0, 3), ...this.fileDatas.slice(result.data.length, 3)];
-        let idx = 0;
-        let arr = this.fileDatas.filter((item) => !!Number(item.state));
-        if (arr.length) {
-          idx = arr.length;
-          this.fileDatas[idx - 1].open = true;
-        }
-        this.fileDatas.map((item, index) => {
-          !Number(item.state) && (item.open = false);
+        setTimeout(() => {
+          this.fileDatas = [...result.data.slice(0, 3), ...this.fileDatas.slice(result.data.length, 3)];
+          let arr = this.fileDatas.filter((item) => !!Number(item.state));
+          this.fileDatas.map((item) => {
+            item.open = false;
+            return item;
+          })
+          if (!!arr.length) {
+            this.fileDatas[arr.length >= 2 ? 2 : arr.length].open = true;
+            this.fileDatas[arr.length - 1].open = true;
+          } else {
+            this.fileDatas[0].open = true;
+          }
         })
-        this.fileDatas[idx].open = true;
       }
-    })
+    });
   }
   // 重新初始化数据
   private getInitData(): void {
     this.fileDatas = [
       { url: '', state: false, _id: "", process: 1, open: true },
-      { url: '', state: false, _id: "", process: 2 },
-      { url: '', state: false, _id: "", process: 3 },
-    ]
+      { url: '', state: false, _id: "", process: 2, },
+      { url: '', state: false, _id: "", process: 3, },
+    ];
   }
   // 监听文件改变
   handleChange(info: { file: UploadFile }, type: number) {
@@ -232,7 +234,7 @@ export class ApplyListsComponent {
     this.file = {
       apply_id: '',
       state: 0
-    }
+    };
     this.getInitData();
   }
   // 改变文件状态
@@ -242,11 +244,18 @@ export class ApplyListsComponent {
     this.httpSer[data.id ? 'putFileId' : 'addFile'](data).subscribe((res) => {
       this.getFiles();
       this.getLists();
-    })
+    });
   }
 
   // 输出文件
   public outFile(): void {
 
   }
-} 
+
+  // 删除
+  public removeFile(id: string, state: any): void {
+    this.httpSer.putFileId({ id: id, state: -1, remove: true }).subscribe((res) => {
+      this.getFiles();
+    })
+  }
+}

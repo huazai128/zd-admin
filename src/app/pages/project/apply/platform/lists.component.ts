@@ -28,30 +28,29 @@ export class PlatformListsComponent {
   public time: Array<any> = [];
   public userShow: boolean = false;
   public id: string;
-  public urlRoot:string = API_ROOT;
+  public u_id: string;
+  public urlRoot: string = API_ROOT;
   public file: any = {
     apply_id: '',
     state: 0,
-  }
+  };
   public headers = {
     "Authorization": 'Bearer ' + localStorage.getItem('id_token')
-  }
+  };
   public imgUplaod = `${API_ROOT}/image`; // 图片上传接口
   public getParams = {
     mold: 'all',
     state: 'all'
-  }
+  };
   public moldOptions = [
     { value: 'all', label: "全部申请" },
     { value: 0, label: "功能测试" },
     { value: 1, label: "兼容测试" },
-  ]
+  ];
   public stateOptions = [
     { value: 1, label: '快速通过' },
-    { value: 0, label: '待审核' },
-    { value: -1, label: '不通过' },
     { value: -2, label: '回收站' },
-  ]
+  ];
   public listsData = {
     data: [],
     pagination: {
@@ -60,12 +59,12 @@ export class PlatformListsComponent {
       pre_page: 10,
       total_page: 0,
     }
-  }
+  };
   public fileDatas: any = [
-    { url: '', state: false, _id: "", process: 1, p_url: '', open: true },
-    { url: '', state: false, _id: "", process: 2, p_url: '' },
-    { url: '', state: false, _id: "", process: 3, p_url: '' },
-  ]
+    { url: '', state: 0, _id: "", process: 1, p_url: '', open: true },
+    { url: '', state: 0, _id: "", process: 2, p_url: '' },
+    { url: '', state: 0, _id: "", process: 3, p_url: '' },
+  ];
   constructor(private httpSer: ApplyService,
     private msg: NzMessageService,
     private router: Router,
@@ -80,7 +79,7 @@ export class PlatformListsComponent {
     ).subscribe((value) => {
       this.keywords = value;
       this.getLists();
-    })
+    });
   }
   // 获取数据
   public getLists(params: any = {}): void {
@@ -102,8 +101,8 @@ export class PlatformListsComponent {
     }
     params.style = 1;
     this.httpSer.getLists(params).subscribe(({ code, result }) => {
-      if (code) this.listsData = result;
-    })
+      if (code) { this.listsData = result }
+    });
   }
 
   // 选择时间
@@ -191,26 +190,29 @@ export class PlatformListsComponent {
     this.getInitData();
     this.httpSer.getFiles({ apply_id: this.file.apply_id }).subscribe(({ code, result }) => {
       if (result.data.length) {
-        this.fileDatas = [...result.data.slice(0, 3), ...this.fileDatas.slice(result.data.length, 3)];
-        let idx = 0;
-        let arr = this.fileDatas.filter((item) => !!Number(item.state));
-        if (arr.length) {
-          idx = arr.length;
-          this.fileDatas[idx - 1].open = true;
-        }
-        this.fileDatas.map((item, index) => {
-          !Number(item.state) && (item.open = false);
+        setTimeout(() => {
+          this.fileDatas = [...result.data.slice(0, 3), ...this.fileDatas.slice(result.data.length, 3)];
+          let arr = this.fileDatas.filter((item) => !!Number(item.state));
+          this.fileDatas.map((item) => {
+            item.open = false;
+            return item;
+          })
+          if (!!arr.length) {
+            this.fileDatas[arr.length >= 2 ? 2 : arr.length].open = true;
+            this.fileDatas[arr.length - 1].open = true;
+          } else {
+            this.fileDatas[0].open = true;
+          }
         })
-        this.fileDatas[idx].open = true;
       }
     })
   }
   // 重新初始化数据
   private getInitData(): void {
     this.fileDatas = [
-      { url: '', state: false, _id: "", process: 1, p_url: '', open: true },
-      { url: '', state: false, _id: "", process: 2, p_url: '' },
-      { url: '', state: false, _id: "", process: 3, p_url: '' },
+      { url: '', state: 0, _id: "", process: 1, p_url: '', open: true },
+      { url: '', state: 0, _id: "", process: 2, p_url: '' },
+      { url: '', state: 0, _id: "", process: 3, p_url: '' },
     ]
   }
   // 监听文件改变
@@ -245,8 +247,9 @@ export class PlatformListsComponent {
   }
 
   // 显示派单弹窗
-  public showModalUser(id): void {
+  public showModalUser(id: string, u_id: string): void {
     this.id = id;
+    this.u_id = u_id;
     this.userShow = true;
   }
 
@@ -268,11 +271,10 @@ export class PlatformListsComponent {
     })
   }
 
-  // 删除 
-  public removeFile(id:string,state:any): void {
-    this.httpSer.putFileId({id:id,state:-1,remove:true}).subscribe((res) => {
+  // 删除
+  public removeFile(id: string, state: any): void {
+    this.httpSer.putFileId({ id: id, state: -1, remove: true }).subscribe((res) => {
       this.getFiles();
     })
   }
-
-} 
+}

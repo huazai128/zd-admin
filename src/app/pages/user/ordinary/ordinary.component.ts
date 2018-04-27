@@ -70,7 +70,7 @@ export class OrdinaryComponent {
     this.searchTerms.next(value);
   }
 
-  // 
+  //
   public resetPws(_id: string, reset: any, num: number, title: string, status?: number): void {
     let arr = [1, 0, -1, -2];
     if (arr.includes(status)) {

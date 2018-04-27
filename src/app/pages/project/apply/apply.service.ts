@@ -46,7 +46,4 @@ export class ApplyService {
   public addFile(data: any = {}): Observable<any> {
     return this.httpSer.post("image", data);
   }
-
-  // 导出文件
-
 }

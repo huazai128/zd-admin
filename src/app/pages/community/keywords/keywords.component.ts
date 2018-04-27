@@ -68,12 +68,12 @@ export class KeywordsComponent {
   // 置顶操作
   public _topKy(data: any = {}): void {
     this.httpSer.moveState(data).subscribe(({ code }) => {
-      if (code) this.getKys();
+      if (code) { this.getKys() };
     })
   }
 
   // 删除操作
-  public _stateKy(data:any): void {
+  public _stateKy(data: any): void {
     this.isVisible = true;
     this.dataKys = data;
   }
@@ -99,23 +99,21 @@ export class KeywordsComponent {
     this.getKys({ state: value })
   }
 
-  // 搜索 
+  // 搜索
   public _kySearch(value): void {
     this.getKys({ keywords: value })
   }
 
   // 批量操作
   public _moveState(data: any): void {
-    this.isVisible = true;
-    this.dataKys = data;
-    // this.moveStateChange(data);
+    this.moveStateChange(data);
   }
 
-  private moveStateChange(data):void{
+  private moveStateChange(data): void {
     this.httpSer.moveState(data).subscribe(({ code, result }) => {
       this.isVisible = false;
       this.dataKys = null;
-      if(code) this.getKys();
+      if (code) { this.getKys() };
     })
   }
 }

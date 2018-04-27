@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter,OnChanges,SimpleChanges } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { UserService } from '../../../../user/user.service';
@@ -13,9 +13,9 @@ import { UserService } from '../../../../user/user.service';
 
 export class TestComponent implements OnChanges {
   @Input() isVisible: boolean;
-  @Input() id:string;
-  @Output() onHideModal = new EventEmitter<any>(); 
-  @Output() onOk = new EventEmitter<any>(); 
+  @Input() id: string;
+  @Output() onHideModal = new EventEmitter<any>();
+  @Output() onOk = new EventEmitter<any>();
 
   public keywords: string;
   private searchTerms = new Subject<string>();
@@ -40,11 +40,14 @@ export class TestComponent implements OnChanges {
     ).subscribe((value) => {
       this.keywords = value;
       this.getUsers();
-    })
+    });
   }
 
-  ngOnChanges(changes:SimpleChanges){
-    console.log(changes);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.id) {
+      this.id = changes.id.currentValue;
+      this.checkedUserId();
+    }
   }
 
   // 获取所有普通用户
@@ -62,9 +65,10 @@ export class TestComponent implements OnChanges {
     this.httpSer.getLists(params).subscribe(({ code, result }) => {
       if (code) {
         this.userData = result;
+        this.checkedUserId();
       }
       this.isLoading = false;
-    })
+    });
   }
 
   // 搜索
@@ -87,13 +91,18 @@ export class TestComponent implements OnChanges {
     this.onHideModal.emit(false);
   }
 
-  // 
-  public getUserId(id: string): void {
+  //
+  public getUserId(id: string): boolean | void {
+    if (Object.is(this.id, id)) {
+      return false;
+    }
     this.id = id;
+    this.checkedUserId();
+  }
+  private checkedUserId(): void {
     this.userData.data.forEach((item) => {
       item.checked = false;
-      item._id == id && (item.checked = true);
-    })
+      item._id === this.id && (item.checked = true);
+    });
   }
-
 }

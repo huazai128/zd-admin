@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule, HttpService } from '@core';
-import { BaCardModule,UEditorModule } from '@components';
+import { BaCardModule, UEditorModule } from '@components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NzFormModule,

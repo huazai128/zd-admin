@@ -24,10 +24,10 @@ export class ListsComponent implements OnInit {
   public allChecked = false;  // 是否全选
   public indeterminate = false;
   public ids: Array<string> = [];
-  public disabled:boolean = false;
+  public disabled: boolean = false;
   public categoryOptions = [ // 文章类型
     { value: 'all', label: '所有文章' },
-    { value: 0, label: '测试类型' },
+    { value: 0, label: '测试工具集市' },
     { value: 1, label: '知识库' },
   ]
   public stateOptions = [
@@ -48,7 +48,7 @@ export class ListsComponent implements OnInit {
     state: "all",  // 选择文章发布状态
     category: "all", // 文章类型
   }
-  public tagIds: Array<string> =  []; // 标签类型
+  public tagIds: Array<string> = []; // 标签类型
 
 
   // 构造函数
@@ -76,7 +76,7 @@ export class ListsComponent implements OnInit {
     })
   }
 
-  // 文章类型 
+  // 文章类型
   public selectCategory(value): void {
     this.getParams.category = value;
     this.getDatas();
@@ -85,9 +85,9 @@ export class ListsComponent implements OnInit {
   // 选着标签
   public selectTags(value): void {
     this.tagIds = value;
-    if(this.tagIds.length >= 3){
+    if (this.tagIds.length >= 3) {
       this.disabled = true
-    }else{
+    } else {
       this.disabled = false
     }
     this.getDatas();
@@ -141,7 +141,7 @@ export class ListsComponent implements OnInit {
     if (!params.page || Object.is(params.page, 1)) {
       this.listsData.pagination.current_page = 1;
     }
-    if(!!this.tagIds.length){
+    if (!!this.tagIds.length) {
       params.tags = this.tagIds.join();
     }
     this.httpSer.getLists(params).subscribe(({ code, result }) => {

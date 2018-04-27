@@ -11,13 +11,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class PlanDetailComponent {
-  public detail: any;
+  public detail: any = {};
   private _id: string;
   constructor(private httpSer: PlanService, private route: ActivatedRoute) {
     this.route.params
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getRoute();
   }
 
@@ -31,7 +31,7 @@ export class PlanDetailComponent {
   private getRoute(): void {
     this.route.params.subscribe(({ _id }) => {
       this._id = _id;
-      if (_id) this.getDetail(_id);
+      if (_id) { this.getDetail(_id) };
     })
   }
 }

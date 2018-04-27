@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommunityService } from '../community.service';
 import { Subject } from 'rxjs/Subject';
-import { distinctUntilChanged,debounceTime } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'community-lists',
@@ -12,11 +12,11 @@ import { distinctUntilChanged,debounceTime } from 'rxjs/operators';
 export class ListsComponent {
   public keywords: string;
   public isLoading: boolean = false;
-  public isDisabled:boolean = true;
-  public ids:Array<string> = [];
-  public allChecked:boolean = false;
-  public indeterminate:boolean = false;
-  public state:string = "all";
+  public isDisabled: boolean = true;
+  public ids: Array<string> = [];
+  public allChecked: boolean = false;
+  public indeterminate: boolean = false;
+  public state: string = "all";
   private searchTerms = new Subject<string>(); // 搜索
   public getParams = {
     category: "all",
@@ -77,24 +77,24 @@ export class ListsComponent {
       this.listsData.pagination.current_page = 1;
     }
     this.communitySer.getLists(params).subscribe(({ code, result }) => {
-      if (code) this.listsData = result;
+      if (code) { this.listsData = result };
     })
   }
 
   // 文章分类
-  public selectCategory($event):void{
+  public selectCategory($event): void {
     this.getParams.category = $event;
     this.getLists();
   }
 
   // 文章发表状态
-  public switchState($event):void{
+  public switchState($event): void {
     this.getParams.state = $event;
     this.getLists();
   }
 
   // 快速操作
-  public moveState(value):void{
+  public moveState(value): void {
     this.moveOptions(this.ids, value);
   }
 
@@ -148,17 +148,17 @@ export class ListsComponent {
   }
 
   // 精选
-  public checkChioce(value,_id):void{
+  public checkChioce(value, _id): void {
     const choice = value ? 1 : 0;
-    this.communitySer.putCommunityId({ choice:choice,_id:_id }).subscribe((res) => {
+    this.communitySer.putCommunityId({ choice: choice, _id: _id }).subscribe((res) => {
       this.getLists();
     })
   }
 
   // 推荐
-  public checkRecommend(value,_id):void{
+  public checkRecommend(value, _id): void {
     const recommend = value ? 1 : 0;
-    this.communitySer.putCommunityId({ recommend:recommend,_id:_id }).subscribe((res) => {
+    this.communitySer.putCommunityId({ recommend: recommend, _id: _id }).subscribe((res) => {
       this.getLists();
     })
   }

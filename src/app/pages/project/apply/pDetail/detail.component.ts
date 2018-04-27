@@ -5,7 +5,7 @@ import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { store } from "@store/store";
 import { API_ROOT } from '@config';
 import { debounceTime } from 'rxjs/operators';
-import { ApplyService } from '../apply.service'
+import { ApplyService } from '../apply.service';
 
 @Component({
   selector: "apply-detail",
@@ -25,7 +25,7 @@ export class PDetailComponent {
   public moldOptions = [
     { value: 0, label: "功能测试" },
     { value: 1, label: "兼容测试" },
-  ]
+  ];
   constructor(private fb: FormBuilder,
     private httpSer: ApplyService,
     private router: Router,
@@ -49,10 +49,10 @@ export class PDetailComponent {
       this.isVisible = true;
     }
     this.validateForm.valueChanges.pipe(
-      debounceTime(300)
+      debounceTime(300),
     ).subscribe((res) => {
       !this.isStore && store.set("apply", res);
-    })
+    });
   }
 
   // 表单提交
@@ -62,11 +62,11 @@ export class PDetailComponent {
       data.style = 1;
       this.httpSer[this._id ? 'putApplyId' : 'addApply'](data).subscribe(({ code, message }) => {
         if (code) {
-          this.router.navigate(['/project/platform'],{ queryParams: { style: 1 }, queryParamsHandling: "merge" });
+          this.router.navigate(['/project/platform'], { queryParams: { style: 1 }, queryParamsHandling: "merge" });
         } else {
           this.msg.error(message);
         }
-      })
+      });
     }
   }
 
@@ -74,8 +74,8 @@ export class PDetailComponent {
   private getRoute(): void {
     this.route.params.subscribe(({ _id }) => {
       this._id = _id;
-      if (_id) this.getApplyId(_id);
-    })
+      if (_id) { this.getApplyId(_id); }
+    });
   }
 
   // 获取
@@ -84,10 +84,10 @@ export class PDetailComponent {
       if (code) {
         this.isStore = true;
         this.applyData = result;
-        let obj = { mold: result.mold, company: result.company, name: result.name, job: result.job, phone: result.phone, email: result.email, content: result.content, qq:result.qq }
+        let obj = { mold: result.mold, company: result.company, name: result.name, job: result.job, phone: result.phone, email: result.email, content: result.content, qq: result.qq };
         this.validateForm.setValue(obj);
       }
-    })
+    });
   }
 
   // 重置表单
@@ -96,7 +96,7 @@ export class PDetailComponent {
     this.validateForm.setValue(obj);
   }
 
-  // 取消使用缓存 
+  // 取消使用缓存
   public handleCancel(): void {
     this.isVisible = false;
     this.isStore = true;
@@ -105,7 +105,7 @@ export class PDetailComponent {
 
   // 确认使用缓存
   public handleOk(): void {
-    const apply = store.get("apply");
+    const apply: any = store.get("apply");
     this.isStore = true;
     !!apply && this.validateForm.setValue(apply);
     store.remove("apply");
