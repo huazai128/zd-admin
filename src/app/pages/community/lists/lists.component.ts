@@ -76,6 +76,7 @@ export class ListsComponent {
     if (!params.page || Object.is(params.page, 1)) {
       this.listsData.pagination.current_page = 1;
     }
+    params.p_hou = true;
     this.communitySer.getLists(params).subscribe(({ code, result }) => {
       if (code) { this.listsData = result };
     })

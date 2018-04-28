@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { PlanService } from '../plan.service';
+import { API_ROOT } from '@config';
 
 @Component({
   selector: "apply-lists",
@@ -21,6 +22,7 @@ export class PlanListsComponent {
   public state: string = "all";
   private searchTerms = new Subject<string>(); // 搜索
   public time: Array<any> = [];
+  public urlRoot: string = API_ROOT;
   public getParams = {
     state: 'all'
   }

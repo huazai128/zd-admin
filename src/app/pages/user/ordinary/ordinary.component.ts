@@ -110,7 +110,6 @@ export class OrdinaryComponent {
             query.time = 1 * 60 * 60 * 1000;
             query.time_name = '禁言一小时'
           }
-          console.log(query);
           this.putAuthId(query);
         }
         if (num === 3) {

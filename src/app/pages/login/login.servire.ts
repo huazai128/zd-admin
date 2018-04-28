@@ -44,7 +44,7 @@ export class LoginService {
   public logout() {
     localStorage.removeItem("id_token");
   }
-  
+
   public loggedIn() {
     return this.appSer.tokenNotExpired();
   }

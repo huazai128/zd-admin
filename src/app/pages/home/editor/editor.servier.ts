@@ -15,7 +15,7 @@ export class NewsEditorServier {
 
   constructor(private msg: NzMessageService, private httpClient: HttpClient) { }
   private headers = {
-    headers: new HttpHeaders().set('Authorization', 'Bearer '+localStorage.getItem('id_token')) 
+    headers: new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('id_token'))
   }
 
   // 获取数据成功
@@ -40,24 +40,26 @@ export class NewsEditorServier {
   }
 
   // 新增新闻
-  public addNews(data):Observable<any>{
-    return this.httpClient.post(this.ApiUrl,data,this.headers).pipe(
+  public addNews(data): Observable<any> {
+    return this.httpClient.post(this.ApiUrl, data, this.headers).pipe(
       switchMap(this.handleResponse),
       retry(3),
       catchError(this.handleError)
     )
   }
+
   // 修改新闻
-  public putNews(data):Observable<any>{
-    return this.httpClient.put(`${this.ApiUrl}/${data._id}`,data,this.headers).pipe(
+  public putNews(data): Observable<any> {
+    return this.httpClient.put(`${this.ApiUrl}/${data._id}`, data, this.headers).pipe(
       switchMap(this.handleResponse),
       retry(3),
       catchError(this.handleError)
     )
   }
+
   // 获取当前新闻
-  public getNews(id:string):Observable<any>{
-    return this.httpClient.get(`${ this.ApiUrl }/${ id }`,this.headers).pipe(
+  public getNews(id: string): Observable<any> {
+    return this.httpClient.get(`${this.ApiUrl}/${id}`, this.headers).pipe(
       switchMap(this.handleResponse),
       retry(3),
       catchError(this.handleError)

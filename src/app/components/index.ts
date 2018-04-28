@@ -1,5 +1,5 @@
 
-import { NgModule,ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { BaCardModule } from './baCard/baCard.module';
 import { UEditorModule } from './baUEdtior/ueditor.module';
 export * from './baCard';
@@ -11,7 +11,7 @@ const MODULES = [
 ]
 
 @NgModule({
-  imports:[
+  imports: [
     BaCardModule.forRoot(),
     UEditorModule.forRoot({
       path: './assets/ueditor/',
@@ -20,14 +20,14 @@ const MODULES = [
       }
     }),
   ],
-  exports:[...MODULES]
+  exports: [...MODULES]
 })
 
-export class AlineModule{
-  static forRoot():ModuleWithProviders{
+export class AlineModule {
+  static forRoot(): ModuleWithProviders {
     return {
-      ngModule:AlineModule,
-      providers:[]
+      ngModule: AlineModule,
+      providers: []
     }
   }
 }

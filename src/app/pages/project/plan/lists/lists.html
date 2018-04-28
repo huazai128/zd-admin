@@ -2,8 +2,8 @@
   <div class="article-list apply">
     <div class="tools flex">
       <div class="out-file">
-        <button nz-button (click)="outFile()" [disabled]="isDisabled">
-          <span>导出</span>
+        <button nz-button [disabled]="isDisabled">
+          <a target="_blank" [href]="urlRoot+'/p_excel?ids='+ ids">导出</a>
         </button>
       </div>
       <div class="btn-group">

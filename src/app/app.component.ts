@@ -4,6 +4,7 @@ import { distinct, concatAll, map } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { Observable } from "rxjs/Observable";
 import { AppService } from './app.servire';
+import { GlobalSeriver } from './global.service';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +13,16 @@ import { AppService } from './app.servire';
       <router-outlet></router-outlet>
     </div>
   `,
-  providers: [AppService]
+  providers: [AppService, GlobalSeriver]
 })
 
 export class AppComponent {
   public optionIsInited: boolean = false;
 
-  constructor(private _router: Router, private appService: AppService) {
-    // 路由拦截
+  constructor(
+    private _router: Router,
+    private _state: GlobalSeriver,
+    private appService: AppService) {
     this._router.events.pipe(
       map(() => {
         return of(this._router.url);
@@ -39,9 +42,10 @@ export class AppComponent {
   // 路由检测
   private routerCheck(url: string = ""): void {
     if (!this.appService.tokenNotExpired()) {
-      this._router.navigate(["/login"])
+      this._router.navigate(["/login"]);
+      localStorage.removeItem("power");
     } else if (!this.optionIsInited) {
-      this._router.navigate(["/"])
+      this._router.navigate(["/"]);
       this.optionIsInited = true;
     }
   }

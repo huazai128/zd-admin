@@ -3,7 +3,7 @@
     <div class="tools flex">
       <div class="out-file">
         <button nz-button (click)="outFile()" [disabled]="isDisabled">
-          <span>导出</span>
+          <a target="_blank" [href]="urlRoot+'/excel?ids='+ ids + '&style=0'">导出</a>
         </button>
       </div>
       <div class="btn-group flex-center">
@@ -214,12 +214,12 @@
             </td>
             <td nz-td>
               <span *ngIf="!list.url">无</span>
-              <a *ngIf="list.url" [href]="urlRoot + list.p_url" [download]="list.url">{{ list.url}}</a>
+              <a target="_blank" *ngIf="list.url" [href]="urlRoot + list.p_url" download="list.url">{{ list.url}}</a>
             </td>
             <td nz-td class="btn-lists">
               <div>
-                <nz-upload nzAction="{{ imgUplaod + '?process=' + (idx+1) + '&id=' + list._id }}" [nzHeaders]='headers' [nzData]="file" nzName="bg"
-                  [nzShowUploadList]="false" (nzChange)="handleChange($event)">
+                <nz-upload nzAction="{{ imgUplaod + '?process=' + (idx+1) + '&id=' + list._id +'&state=' + list.state }}" [nzHeaders]='headers'
+                  [nzData]="file" nzName="bg" [nzShowUploadList]="false" (nzChange)="handleChange($event)">
                   <button nz-button class="btn btn-success" [disabled]="!list.open">
                     <i class="anticon anticon-upload"></i>
                     <span>上传文件</span>

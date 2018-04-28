@@ -3,9 +3,9 @@ import { HttpService } from '@core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class TagService{
+export class TagService {
 
-  constructor(private httpSer:HttpService){}
+  constructor(private httpSer: HttpService) { }
 
   // 表单提交
   public addTag(data: any = {}): Observable<any> {
@@ -28,12 +28,12 @@ export class TagService{
   }
 
   // 批量操作
-  public moveState(params:any): Observable<any> {
+  public moveState(params: any): Observable<any> {
     return this.httpSer.patch("tag", params);
   }
 
   // 删除
-  public deleteTagId(id:string):Observable<any>{
+  public deleteTagId(id: string): Observable<any> {
     return this.httpSer.deleteId(`tag/${id}`);
   }
 }

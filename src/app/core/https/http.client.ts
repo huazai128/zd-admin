@@ -80,7 +80,7 @@ export class HttpService {
     )
   }
 
-  public deleteId(url:string): Observable<any> {
+  public deleteId(url: string): Observable<any> {
     return this.httpClient.delete(`${API_ROOT}/${url}`, this.headers).pipe(
       switchMap(this.handleResponse),
       retry(3),

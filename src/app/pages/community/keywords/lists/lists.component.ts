@@ -36,15 +36,18 @@ export class KyListsComponent {
 
   // 初始化
   ngOnInit() {
-    setTimeout(() => {
-      this.isDisabled = false;
-    }, 0);
     this.searTeams.pipe(
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe((res) => {
       this.kySearch.emit(res);
     })
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.isDisabled = false;
+    }, 2);
   }
 
   // 编辑

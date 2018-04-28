@@ -68,9 +68,8 @@ export class EditorComponent implements OnChanges, OnInit {
 
   // 监听双向数据绑定的变化；
   ngOnChanges(change: any) {
-    console.log(change);
   }
-  
+
   // 提交表单
   public submitForm() {
     if (this.validateForm.valid) {
@@ -88,7 +87,7 @@ export class EditorComponent implements OnChanges, OnInit {
     }
   }
 
-  // 取消使用缓存 
+  // 取消使用缓存
   public handleCancel(): void {
     this.isVisible = false;
     this.isStore = true;
@@ -102,15 +101,15 @@ export class EditorComponent implements OnChanges, OnInit {
 
   // 确认使用缓存
   public handleOk(): void {
-    const news = store.get("news");
+    const news: any = store.get("news");
     const imgs = store.get("imgs")
     this.isStore = true;
     !!news && this.validateForm.setValue(news);
     if (!!imgs) {
-      this.avatarUrl = imgs.avatarUrl;
-      this.mAvatarUrl = imgs.mAvatarUrl;
-      this.imgUrl = imgs.imgUrl;
-      this.mImgUrl = imgs.mImgUrl;
+      this.avatarUrl = (<any>imgs).avatarUrl;
+      this.mAvatarUrl = (<any>imgs).mAvatarUrl;
+      this.imgUrl = (<any>imgs).imgUrl;
+      this.mImgUrl = (<any>imgs).mImgUrl;
       store.remove("imgs");
     }
     store.remove("news");
@@ -145,7 +144,7 @@ export class EditorComponent implements OnChanges, OnInit {
     this.imgUrl = '';
     this.mImgUrl = '';
   }
-  
+
   // 文件上传
   beforeUpload = (file: File) => {
     let types = ['jpeg', 'png', 'jpg'];

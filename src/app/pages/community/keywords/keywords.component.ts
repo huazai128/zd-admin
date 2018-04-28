@@ -16,6 +16,7 @@ export class KeywordsComponent {
   public kyId: string;
   public dataKys = null;
   public isLoading = true;
+  public isText = false;
 
   constructor(private httpSer: KeywordsSerive) { }
 
@@ -74,8 +75,10 @@ export class KeywordsComponent {
 
   // 删除操作
   public _stateKy(data: any): void {
-    this.isVisible = true;
     this.dataKys = data;
+    if (Object.is(data.active, 0)) this.isText = true;
+    this.isVisible = true;
+
   }
 
   // 确认删除

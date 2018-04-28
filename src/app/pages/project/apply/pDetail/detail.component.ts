@@ -38,7 +38,7 @@ export class PDetailComponent {
       job: ["", [Validators.required]],
       phone: ["", [Validators.required, Validators.pattern(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)]],
       email: ["", [Validators.required, Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]],
-      qq: ["", [Validators.required]],
+      qq: ["", [Validators.required, Validators.pattern(/^[1-9][0-9]{4,10}$/)]],
       content: [""],
     });
   }

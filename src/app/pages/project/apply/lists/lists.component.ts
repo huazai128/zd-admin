@@ -247,11 +247,6 @@ export class ApplyListsComponent {
     });
   }
 
-  // 输出文件
-  public outFile(): void {
-
-  }
-
   // 删除
   public removeFile(id: string, state: any): void {
     this.httpSer.putFileId({ id: id, state: -1, remove: true }).subscribe((res) => {

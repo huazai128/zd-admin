@@ -51,7 +51,7 @@ let API = 'http://192.168.0.150:4201';
             // 'blockquote', //引用
             // 'pasteplain', //纯文本粘贴模式
             // 'selectall', //全选
-            'simpleupload', //单图上传
+            // 'simpleupload', //单图上传
             'insertimage', //多图上传
             // 'print', //打印
             // 'preview', //预览

@@ -18,7 +18,7 @@ export class EditorComponent {
 
   constructor(private fb: FormBuilder) {
     this.validateForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(8)]],
       enable: [true, [Validators.required]],
     });
   }

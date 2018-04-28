@@ -19,7 +19,7 @@ export class PlatformListsComponent {
   public isLoading: boolean = false;
   public loading: boolean = false;
   public isDisabled: boolean = true;
-  public ids: Array<string> = [];
+  public ids: Array<any> = [];
   public allChecked: boolean = false;
   public indeterminate: boolean = false;
   public isVisible: boolean = false;
@@ -277,4 +277,12 @@ export class PlatformListsComponent {
       this.getFiles();
     })
   }
+
+  // // 导出文件
+  // public outFile(): void {
+  //   let ids: Array<any> = (<any>this.ids).join('');
+  //   this.httpSer.outFiles({ ids: ids, type: 1 }).subscribe((res) => {
+  //     console.log(res);
+  //   })
+  // }
 }

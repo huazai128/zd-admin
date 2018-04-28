@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, SimpleChanges, ViewChild, OnInit } from "
 import { FormGroup, AbstractControl, FormBuilder, Validators } from "@angular/forms";
 import { NewsListServier } from "./list.service";
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { API_ROOT,WebUrl } from '@config';
+import { API_ROOT, WebUrl } from '@config';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class ListComponent implements OnInit {
   private newsIds = []; // 存储ID集合
   public isLoading: boolean = true;
   public imgRoot: string = API_ROOT;
-  public weUrl:string = WebUrl;
+  public weUrl: string = WebUrl;
   public newsData = { // 文章集合对象
     data: [],
     pagination: {
@@ -62,7 +62,7 @@ export class ListComponent implements OnInit {
     }
     params.state = this.getParams.state;
     params.public = this.getParams.public
-      if(!params.page || Object.is(params.page, 1)) {
+    if (!params.page || Object.is(params.page, 1)) {
       this.newsData.pagination.current_page = 1;
     }
 
@@ -79,7 +79,7 @@ export class ListComponent implements OnInit {
 
   // 检索条件
   public switchState(value: any) {
-    if (value == undefined || Object.is(value, (<any>this.getParams).state)) return;
+    if (value === undefined || Object.is(value, (<any>this.getParams).state)) return;
     this.getParams.state = value;
     this.getParams.public = value;
     this.getNews();

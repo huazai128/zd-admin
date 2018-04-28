@@ -14,7 +14,7 @@ export class TagComponent {
   public isVisible: boolean = false;
   public tags = []; // 缓存所有tag集合
   public pagination = {};
-  public tagId:string;
+  public tagId: string;
 
   constructor(private tagSer: TagService) { }
 
@@ -65,7 +65,6 @@ export class TagComponent {
 
   // 置顶操作
   public _topTag(data: any = {}): void {
-    console.log(data)
     this.tagSer.moveState(data).subscribe(({ code }) => {
       if (code) this.getTags();
     })
@@ -80,19 +79,19 @@ export class TagComponent {
   // 确认删除
   public handleOk(): void {
     this.tagSer.deleteTagId(this.tagId).subscribe(({ code }) => {
-      if(code) this.getTags();
+      if (code) this.getTags();
       this.isVisible = false;
     })
   }
 
   // 取消删除
-  public handleCancel():void{
+  public handleCancel(): void {
     this.isVisible = false;
     this.tagId = '';
   }
 
   // 分页操作
-  public _pageTags(page:number){
-    this.getTags({page: page})
+  public _pageTags(page: number) {
+    this.getTags({ page: page })
   }
 }

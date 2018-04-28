@@ -26,6 +26,6 @@
 <nz-modal [nzVisible]="isVisible" [nzTitle]="'提示'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)"
   [nzConfirmLoading]="isConfirmLoading">
   <ng-template #modalContent>
-    <p [style.color]="'red'">是否删除当前的标签</p>
+    <p [style.color]="'red'">是否进行当前操作</p>
   </ng-template>
 </nz-modal>

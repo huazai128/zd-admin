@@ -45,9 +45,9 @@ export class AuthComponent {
     private modalSer: NzModalService,
     private msg: NzMessageService) {
     this.validateForm = this.fb.group({
-      username: [null, [Validators.required]],
-      email: ["", [Validators.required]],
-      password: [null, [Validators.required]],
+      username: [null, [Validators.required, Validators.pattern(/(^s*)|(s*$)/g)]],
+      email: ["", [Validators.required, Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]],
+      // password: [null, [Validators.required, Validators.pattern(/(^s*)|(s*$)/g)]],
     });
   }
 
@@ -152,7 +152,6 @@ export class AuthComponent {
       this.user = {
         username: user.username,
         email: user.email,
-        password: user.password,
       };
       this.checked = (<any>user).power;
       this.checkLists.forEach((item) => (<any>user).power.includes(item.value) && (item.checked = true));

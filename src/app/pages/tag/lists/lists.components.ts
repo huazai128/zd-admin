@@ -45,7 +45,7 @@ export class ListsComponent {
 
   // }
 
-  public asd(page:number) {
+  public asd(page: number) {
     this.pageTags.emit(page);
   }
 }
